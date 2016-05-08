@@ -1,0 +1,656 @@
+// bower:scss
+// endbower
+
+#lastground
+{
+    width: 100%;
+    height: 100vh;
+
+    background-image: url('../images/digital-hive.jpeg');
+}
+.browsehappy
+{
+    margin: .2em 0;
+    padding: .2em 0;
+
+    color: #000;
+    background: #ccc;
+}
+
+body
+{
+    padding: 0;
+}
+
+.hidden
+{
+    display: none;
+}
+
+ons-list
+{
+    min-height: 100%;
+}
+
+.list__item__center
+{
+    background-size: 100% 0;
+}
+
+ons-carousel-item{
+    height:100%!important;
+}
+// This is the hovering + button
+ons-button.fab
+{
+    position: fixed;
+    right: 8vw;
+    bottom: 4vh;
+}
+
+ons-list-header
+{
+    text-align: center;
+
+    color: white;
+    border: solid black 1px;
+    background-color: grey;
+}
+// --------  CHAT MESSAGES ---------//
+.clear
+{
+    clear: both;
+}
+.sent-msg
+{
+    float: right;
+
+    .list__item--material__center
+    {
+        padding: 0;
+    }
+
+
+    .message-content
+    {
+        min-width: 83%;
+        padding: 17px 8% 17px 8%;
+
+        color: black;
+        background: #caf1fb;
+
+        -webkit-clip-path: polygon(10% 0%, 100% 0, 93% 25%, 93% 75%, 100% 100%, 10% 100%, 5px 75%, 5px 25%);
+                clip-path: polygon(10% 0%, 100% 0, 93% 25%, 93% 75%, 100% 100%, 10% 100%, 5px 75%, 5px 25%);
+    }
+
+    .message-time
+    {
+        font-size: 15px;
+
+        position: absolute;
+        z-index: 9;
+        right: 30px;
+        bottom: -8px;
+
+        padding: 1px 5px 0 5px;
+
+        background: white;
+
+        -webkit-clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
+                clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
+
+        // /* Safari */
+        // -webkit-transform: rotate(-90deg);
+        // // /* Firefox */
+        //    -moz-transform: rotate(-90deg);
+        // // /* IE */
+        //     -ms-transform: rotate(-90deg);
+        // // /* Opera */
+        //      -o-transform: rotate(-90deg);
+        // // /* Internet Explorer */
+        // //
+        // filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    }
+}
+.received-msg
+{
+    float: left;
+    .list__item--material__center,
+    .list__item__center
+    {
+        margin-left: 5px;
+        padding: 0;
+    }
+    .message-username
+    {
+        position: absolute;
+        z-index: 9;
+        top: -10px;
+        left: 5px;
+
+        padding: 0 5px 0 5px;
+
+        color: white;
+        background: black;
+
+        -webkit-clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
+                clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
+    }
+
+    .message-content
+    {
+        min-width: 80%;
+        padding: 17px 8% 17px 12%;
+
+        color: black;
+        background: #e5e5ea;
+
+        -webkit-clip-path: polygon(5px 0%, 93% 0, 99% 25%, 99% 75%, 93% 100%, 5px 100%, 10% 75%, 10% 25%);
+                clip-path: polygon(5px 0%, 93% 0, 99% 25%, 99% 75%, 93% 100%, 5px 100%, 10% 75%, 10% 25%);
+    }
+    .message-time
+    {
+        font-size: 15px;
+
+        position: absolute;
+        z-index: 9;
+        right: 30px;
+        bottom: -8px;
+
+        padding: 1px 5px 0 5px;
+
+        background: darkgray;
+
+        -webkit-clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
+                clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
+    }
+}
+
+.info-msg
+{
+    font-weight: bold;
+    font-style: italic;
+
+    position: relative;
+
+    float: right;
+
+    margin-bottom: 15px;
+
+    text-align: center;
+
+    color: white;
+    border-right: solid 21px !important;
+    border-radius: 0 !important;
+    background: #009688 !important;
+    box-shadow: -26px 3px .5em black !important;
+}
+
+.chat-bottom-toolbar
+{
+    position: absolute;
+    z-index: 0;
+
+    width: 85vh;
+    .message-input
+    {
+        width: 85vw;
+        height: 86%;
+        border: none;
+    }
+    .message-send-button
+    {
+        font-size: xx-large;
+
+        width: 12vw;
+        padding: 0;
+    }
+}
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer
+{
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+/* Custom page header */
+.header
+{
+    margin-bottom: 10px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    /* Make the masthead heading the same height as the navigation */
+    h3
+    {
+        line-height: 40px;
+
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-bottom: 19px;
+    }
+}
+
+/* Custom page footer */
+.footer
+{
+    padding-top: 19px;
+
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr
+{
+    margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron
+{
+    text-align: center;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    .btn
+    {
+        font-size: 21px;
+
+        padding: 14px 24px;
+    }
+}
+
+/* Supporting marketing content */
+.marketing
+{
+    margin: 40px 0;
+
+    p + h4
+    {
+        margin-top: 28px;
+    }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px)
+{
+    .container
+    {
+        max-width: 730px;
+    }
+
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer
+    {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    /* Space out the masthead */
+    .header
+    {
+        margin-bottom: 30px;
+    }
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron
+    {
+        border-bottom: 0;
+    }
+}
+
+///---------------- LOGIN  -------------------//
+.login-form
+{
+    width: 80%;
+    margin: 60px auto 0;
+
+    text-align: center;
+}
+
+// input
+// {
+//     display: block;
+//
+//     width: 100%;
+//     height: 100%;
+//     margin: 0 auto;
+//     padding-top: 15px;
+//     padding-bottom: 16px;
+//
+//     outline: none;
+// }
+
+.login-button
+{
+    width: 100%;
+    margin: 0 auto;
+}
+
+.forgot-password
+{
+    font-size: 14px;
+
+    display: block;
+
+    margin: 8px auto 0 auto;
+}
+
+
+///---------------- ACCOUNT  -------------------//
+
+
+.profile-card
+{
+    line-height: 1.4;
+
+    width: 100%;
+    padding: 30px 0;
+
+    text-align: center;
+
+    color: white;
+    background-color: #33393c;
+    text-shadow: rgba(0, 0, 0, .4) 0 1px 0;
+}
+
+.profile-image
+{
+    width: 100px;
+    height: 100px;
+
+    border: 1px solid white;
+    -webkit-border-radius: 50%;
+            border-radius: 50%;
+    background-color: black;
+    -webkit-box-shadow: rgba(0, 0, 0, .2) 0 2px 0 0;
+            box-shadow: rgba(0, 0, 0, .2) 0 2px 0 0;
+}
+
+.profile-name
+{
+    font-size: 17px;
+    font-weight: 600;
+
+    margin: 20px 0 0 0;
+}
+
+.profile-id
+{
+    font-size: 14px;
+
+    margin: 0 0 5px 0;
+
+    opacity: .6;
+}
+
+.profile-desc
+{
+    font-size: 15px;
+
+    width: 90%;
+    margin: 0 auto;
+
+    text-align: center;
+
+    opacity: .6;
+}
+
+.info-col
+{
+    line-height: 1;
+
+    height: 60px;
+    padding: 12px 0 12px 4px;
+}
+
+.info-num
+{
+    font-size: 16px;
+    font-weight: 500;
+
+    opacity: .8;
+}
+
+.info-unit
+{
+    font-size: 14px;
+
+    margin-top: 6px;
+
+    opacity: .4;
+}
+
+///---------------- main.slide-menu -------------------//
+
+.list-item-container
+{
+    line-height: 1;
+
+    padding: 15px 0 15px 15px;
+}
+
+.thumbnail
+{
+    width: 80px;
+    height: 80px;
+
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+}
+
+.name
+{
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 16px;
+
+    margin-bottom: 6px;
+}
+
+.location
+{
+    font-size: 14px;
+
+    margin-bottom: 6px;
+
+    opacity: .4;
+}
+
+.desc
+{
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+
+/// ------------------ chat ----------------------------///
+.to-wrapper
+{
+    line-height: 1;
+
+    height: 62px;
+    padding: 10px;
+}
+
+.to-image
+{
+    width: 42px;
+    height: 42px;
+
+    -webkit-border-radius: 4px;
+            border-radius: 4px;
+}
+
+.to-name
+{
+    font-size: 17px;
+    font-weight: 500;
+
+    margin-bottom: 4px;
+}
+
+.to-email
+{
+    font-size: 14px;
+
+    opacity: .4;
+}
+
+.text-input
+{
+    margin-top: 4px;
+}
+
+.textarea
+{
+    margin-top: 4px;
+}
+
+// ------------ Event  ------------//
+
+
+#event_slider
+{
+    // top: 2.7em;
+    .onsen-sliding-menu__menu
+    {
+        top: 56px;
+        right: 14vw;
+        // width: 65% !important;
+        // right: 15% !important;
+        ons-list-item
+        {
+            // right: 14vw;
+        }
+        // display: block !important;
+        ons-icon
+        {
+            font-size: 13vw;
+        }
+    }
+
+
+    // thie event menu page
+    .page__content
+    {
+        // width: 85vw;
+        overflow-wrap: break-word;
+    }
+}
+
+
+// -------------- List animation  ------------//
+.animate-enter
+{
+    position: relative;
+
+    display: block;
+
+    -webkit-animation: enter 575ms cubic-bezier(.420, .000, .580, 1.000);
+            animation: enter 575ms cubic-bezier(.420, .000, .580, 1.000);
+}
+@-webkit-keyframes enter
+{
+    from
+    {
+        right: -70px;
+
+        height: 0;
+
+        opacity: 0;
+    }
+    75%
+    {
+        right: 15px;
+    }
+    to
+    {
+        right: 0;
+
+        height: 30px;
+
+        opacity: 1;
+    }
+}
+@keyframes enter
+{
+    from
+    {
+        right: -70px;
+
+        height: 0;
+
+        opacity: 0;
+    }
+    75%
+    {
+        right: 15px;
+    }
+    to
+    {
+        right: 0;
+
+        height: 30px;
+
+        opacity: 1;
+    }
+}
+
+.animate-leave
+{
+    position: relative;
+
+    display: block;
+
+    -webkit-animation: leave 575ms cubic-bezier(.420, .000, .580, 1.000);
+            animation: leave 575ms cubic-bezier(.420, .000, .580, 1.000);
+}
+@-webkit-keyframes leave
+{
+    to
+    {
+        right: -70px;
+
+        height: 0;
+
+        opacity: 0;
+    }
+    25%
+    {
+        right: 15px;
+    }
+    from
+    {
+        right: 0;
+
+        height: 30px;
+
+        opacity: 1;
+    }
+}
+@keyframes leave
+{
+    to
+    {
+        right: -70px;
+
+        height: 0;
+
+        opacity: 0;
+    }
+    25%
+    {
+        right: 15px;
+    }
+    from
+    {
+        right: 0;
+
+        height: 30px;
+
+        opacity: 1;
+    }
+}
