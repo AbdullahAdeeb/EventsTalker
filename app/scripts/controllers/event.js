@@ -131,8 +131,19 @@ angular.module('onTimeApp')
     //   }else{
     //       alert('map is already loaded');
     //   }
-    var myMarker = new H.map.Marker({'lng':Account.location.lng, 'lat':Account.location.lat});
-    map.addObject(myMarker)
+    var icon = new H.map.Icon('<svg version="1.1" id="Layer_12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"'+
+    	 'width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">'+
+    '<g>'+
+    	'<path d="M70.062,84.747H29.938L9.878,50l20.06-34.747h40.123L90.122,50L70.062,84.747z M31.671,81.747h36.658L86.658,50'+
+    		'L68.329,18.253H31.671L13.342,50L31.671,81.747z"/>'+
+    '</g>'+
+    '</svg>');
+
+  // empty-hex.svg
+    var myMarker = new H.map.Marker({'lng':Account.location.lng, 'lat':Account.location.lat},{icon:icon});
+    var range = new H.map.Circle({'lng':Account.location.lng, 'lat':Account.location.lat},Account.location.accuracy)
+    map.addObject(myMarker);
+    map.addObject(range);
     }
 
   });
