@@ -41,9 +41,22 @@
         </ons-col>
       </ons-row>
     </ons-list-item>
-    <ons-list-item modifier="chevron">
-      <div>
-        <form>
+    
+   
+    <p> Update Email </p>
+    <ons-list-item>
+        <div style="text-align: center;">
+    <p>
+      <ons-input id="username" modifier="underbar" placeholder="New Email" ng-model ="newEmail" float></ons-input>
+    </p>
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="Password" ng-model ="pass" float></ons-input>
+    </p>
+    <p style="margin-top: 10px;">
+      <ons-button ng-click="changeEmail(pass, newEmail)">Update</ons-button>
+    </p>
+  </div>
+        <!---<form>
           <h3>Change Email</h3>
 
           <p class="form-group">
@@ -57,12 +70,33 @@
           </p>
 
           <button ng-click="changeEmail(pass, newEmail)">update email</button>
-        </form>
-      </div>
+        </form>-->
+      
     </ons-list-item>
-
-    <ons-list-item modifier="chevron">
-      <div>
+    
+    <p> Update Password </p>
+    <ons-list-item>
+      
+          <div class ="c" style="text-align: center;">
+    <p>
+      <ons-input id="username" modifier="underbar" placeholder="Old Password" ng-model= "oldpass" float></ons-input>
+    </p>
+            
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="New Password" ng-model = "newpass" float></ons-input>
+    </p>
+            
+    <p>
+      <ons-input id="password" modifier="underbar" type="password" placeholder="Confirm New Password"  ng-model = "confirm" float></ons-input>
+    </p>
+    <p style="margin-top: 10px;">
+      <ons-button ng-click="changePassword(oldpass, newpass, confirm)">Update</ons-button>
+    </p>
+  </div>
+      
+      
+      
+      <!--- <div>
         <form role="form">
           <h3>Change Password</h3>
 
@@ -86,11 +120,11 @@
           <p class="error" ng-show="err">{{err}}</p>
           <p class="good" ng-show="msg">{{msg}}</p>
         </form>
-      </div>
+      </div> -->
     </ons-list-item>
 
     <ons-list-item modifier="chevron">
-      <button role="button" ng-click="logout()">Log Out</button>
+      <ons-button role="button" ng-click="logout()">Log Out</ons-button>
     </ons-list-item>
 
   </ons-list>

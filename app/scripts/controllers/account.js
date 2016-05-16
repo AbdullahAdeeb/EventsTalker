@@ -28,14 +28,18 @@ angular.module('onTimeApp')
       } else if (newPass !== confirm) {
         error('Passwords do not match');
       } else {
+        console.log('In change pass function');
         Auth.$changePassword({
-            email: profile.email,
+            email: Account.fbo.email,
             oldPassword: oldPass,
             newPassword: newPass
           })
           .then(function() {
-            success('Password changed');
-          }, error);
+          console.log('Password changed successfully');  
+          //success('Password changed');
+          }).catch(function(error){
+          console.error("Error:",error);
+        });
       }
     };
 
@@ -44,14 +48,20 @@ angular.module('onTimeApp')
       Auth.$changeEmail({
           password: pass,
           newEmail: newEmail,
-          oldEmail: profile.email
+          oldEmail: Account.fbo.email
         })
         .then(function() {
-          profile.email = newEmail;
-          profile.$save();
-          success('Email changed');
+          Account.fbo.email = newEmail;
+          Account.fbo.$save().then(function(){
+          },function(error){
+          console.log("Error",error);
+                         });
+          console.log('Email changed');
         })
-        .catch(error);
+        .catch(function(error){
+        console.error("Error:",error);
+      });
+    
     };
 
     function error(err) {
