@@ -1,6 +1,3 @@
-
-
-
 ///////////////////////////////
 //[[[    ACCOUNT SERVICE  ]]]]]
 //////////////////////////////
@@ -9,6 +6,7 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
   'use strict';
 
   var account = {
+    'broadcastLocationCallback' : function() {console.error("no broadcastLocationCallback defined")},
     'location': {
       'lat': 0,
       'lng': 0,
@@ -40,16 +38,21 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
         alert(err);
       },
       function(position) {
-        account.location.timestamp = position.timestamp;
-        account.location.lat = position.coords.latitude;
-        account.location.lng = position.coords.longitude;
-        account.location.accuracy = position.coords.accuracy;
-        account.location.speed = position.coords.speed;
-
-        account.$ref().child('location').set(account.location);
-        console.debug('location watcher >> ', position, ' || account.location=', account.location);
-
+        updateLocation(position);
       });
+  }
+
+  function updateLocation(position) {
+    account.location.timestamp = position.timestamp;
+    account.location.lat = position.coords.latitude;
+    account.location.lng = position.coords.longitude;
+    account.location.accuracy = position.coords.accuracy;
+    account.location.speed = position.coords.speed;
+
+    account.$ref().child('location').set(account.location);
+    console.debug('location watcher >> ', position, ' || account.location=', account.location);
+
+    account.broadcastLocationCallback(account.location);
   }
 
   function loadAccount(authData) {

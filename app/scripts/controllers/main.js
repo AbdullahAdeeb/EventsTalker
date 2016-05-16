@@ -13,19 +13,19 @@
 ////////////////////////////////////////////
 angular.module('onTimeApp')
   .controller('MainCtrl', function(
-      Account,
-      Events,
+    Account,
+    Events,
     //   user,
     //   Auth,
-      UsersRef,
-      RoomMetaRef,
-      RoomMsgsRef,
-      RoomUsersRef,
-      $firebaseArray,
-      $firebaseObject,
-      $location,
-      $scope
-  ){
+    UsersRef,
+    RoomMetaRef,
+    RoomMsgsRef,
+    RoomUsersRef,
+    $firebaseArray,
+    $firebaseObject,
+    $location,
+    $scope
+  ) {
     /////// TODO test/ /////
     window.s = $scope;
     ////////////////////////
@@ -39,8 +39,9 @@ angular.module('onTimeApp')
     $scope.createEvent = Events.createEvent;
     $scope.acceptInvite = Events.acceptInvite;
     $scope.rejectInvite = Events.rejectInvite;
-    $scope.test = function(){
-        window.alert('test2');
+    $scope.todaysDate = new Date();
+    $scope.test = function() {
+      window.alert('test2');
     };
 
     $scope.reload = function() {

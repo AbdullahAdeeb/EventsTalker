@@ -18,7 +18,7 @@ angular.module('onTimeApp')
     $scope.logout = function() {
       Auth.$unauth();
       Account.fbo.$destroy();
-      Account = {};
+      Account.fbo = undefined;
     };
 
     $scope.changePassword = function(oldPass, newPass, confirm) {

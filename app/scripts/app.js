@@ -22,9 +22,9 @@ angular.module('onTimeApp', [
   'ngSanitize',
   'ngTouch',
   'ngCordova',
-  // 'ngMaterial',
+  'ngMaterial',
   'checklist-model'
 ]).run(function(Account) {
-   
+
 
 });
