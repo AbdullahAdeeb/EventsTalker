@@ -20,11 +20,13 @@ angular.module('onTimeApp', [
   'ngResource',
   'ngRoute',
   'ngSanitize',
-  'ngTouch',
+  // 'ngTouch',
   'ngCordova',
   'ngMaterial',
   'checklist-model'
-]).run(function(Account) {
-
-
-});
+]);
+//.run(function(Account) {
+  // if (window.cordova) {
+  //   cordova.plugins.backgroundMode.enable();
+  // }
+//});

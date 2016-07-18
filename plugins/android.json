@@ -12,7 +12,14 @@
         },
         "cordova-plugin-geolocation": {
             "PACKAGE_NAME": "com.barmejapps.onTime"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.barmejapps.onTime"
         }
     },
-    "dependent_plugins": {}
+    "dependent_plugins": {
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.barmejapps.onTime"
+        }
+    }
 }

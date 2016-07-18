@@ -129,7 +129,7 @@ angular.module('onTimeApp')
           center: new H.geo.Point(Account.location.lat, Account.location.lng),
           zoom: 18
         });
-        thisEvent.map.markers = {};
+      thisEvent.map.markers = {};
 
       //   }else{
       //       alert('map is already loaded');
@@ -198,6 +198,9 @@ angular.module('onTimeApp')
       }
     };
 
-
+    document.addEventListener("deviceready", function() {
+        alert('device is ready and background mode is enabled');    
+      cordova.plugins.backgroundMode.enable();
+    }, false);
 
   });
