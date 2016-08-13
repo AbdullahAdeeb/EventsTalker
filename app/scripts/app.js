@@ -10,8 +10,9 @@
  */
 angular.module('onTimeApp', [
   'firebase',
+  'firebase.config',
   'firebase.ref',
-  'firebase.auth',
+  // 'firebase.auth',
   'onsen',
   'ngAnimate',
   'ngAria',

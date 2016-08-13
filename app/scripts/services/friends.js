@@ -53,11 +53,13 @@ angular.module('onTimeApp').factory('Friends', ['UsersRef', 'Account', 'RoomMeta
       // $scope.friends.list.$add({Account.requests.received[reqId].$id}); // remove firend sent request
     };
     friends.ignoreFriendRequest = function(reqId, request) {
+      var temp = request;
       friends.requests.received[reqId] = null;
       friends.requests.$save();
       UsersRef.child(reqId).child('requests').child('sent').child(Account.getId()).remove();
     };
     friends.cancelFriendRequest = function(reqId, request) {
+      var temp = request;
       friends.requests.sent[reqId] = null;
       friends.requests.$save();
       UsersRef.child(reqId).child('requests').child('received').child(Account.getId()).remove();

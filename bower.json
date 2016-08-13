@@ -34,8 +34,5 @@
     "angular-mocks": "^1.3.0"
   },
   "appPath": "app",
-  "moduleName": "onTime",
-  "resolutions": {
-    "firebase": "2.x.x"
-  }
+  "moduleName": "onTime"
 }

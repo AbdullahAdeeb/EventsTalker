@@ -31,7 +31,7 @@ angular.module('onTimeApp')
 
 /**
  * Adds a special `whenAuthenticated` method onto $routeProvider. This special method,
- * when called, invokes Auth.$requireAuth() service (see Auth.js).
+ * when called, invokes Auth.$requireSignIn() service (see Auth.js).
  *
  * The promise either resolves to the authenticated user object and makes it available to
  * dependency injection (see AccountCtrl), or rejects the promise if user is not logged in,
@@ -48,7 +48,7 @@ angular.module('onTimeApp')
     console.log(path);
     route.resolve = route.resolve || {};
     route.resolve.user = ['Auth', function(Auth) {
-      return Auth.$requireAuth();
+      return Auth.$requireSignIn();
     }];
     $routeProvider.when(path, route);
     SECURED_ROUTES[path] = true;
@@ -107,7 +107,7 @@ angular.module('onTimeApp')
 .run(['$rootScope', '$location', 'Auth', 'SECURED_ROUTES', 'loginRedirectPath',
   function($rootScope, $location, Auth, SECURED_ROUTES, loginRedirectPath) {
     // watch for login status changes and redirect if appropriate
-    Auth.$onAuth(check);
+    Auth.$onAuthStateChanged(check);
 
     // some of our routes may reject resolve promises with the special {authRequired: true} error
     // this redirects to the login page whenever that is encountered

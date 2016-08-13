@@ -6,7 +6,9 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
   'use strict';
 
   var account = {
-    'broadcastLocationCallback' : function() {console.error("no broadcastLocationCallback defined")},
+    'broadcastLocationCallback': function() {
+      console.error("no broadcastLocationCallback defined")
+    },
     'location': {
       'lat': 0,
       'lng': 0,
@@ -19,9 +21,12 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
     return account.fbo.$ref();
   };
   account.getUsername = function() {
+      console.debug('getUserName() account >>',account.fbo.username,'  ||  Auth >>',Auth.$currentUser.$displayName)
     return account.fbo.username;
   };
   account.getId = function() {
+      console.debug('getId()  account >>',account.fbo.$id,'  ||  Auth >>',Auth.$currentUser)
+
     return account.fbo.$id;
   };
 
@@ -64,6 +69,8 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
     // stores the timestamp of my last disconnect (the last time I was seen online)
     var lastOnlineRef = account.$ref().child('lastOnline');
     var connectedRef = FireRef.child('.info/connected');
+
+
     connectedRef.on('value', function(snap) {
       if (snap.val() === true) {
         // We're connected (or reconnected)! Do anything here that should happen only if online (or on reconnect)
@@ -73,9 +80,41 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
         // when I disconnect, remove this device
         con.onDisconnect().remove();
         // when I disconnect, update the last time I was seen online
-        lastOnlineRef.onDisconnect().set(Firebase.ServerValue.TIMESTAMP);
+        lastOnlineRef.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
       }
     });
+
+    //FCMPlugin.onNotification( onNotificationCallback(data), successCallback(msg), errorCallback(err) )
+    //Here you define your application behaviour based on the notification data.
+    if (typeof FCMPlugin !== 'undefined') {
+      FCMPlugin.onNotification(
+        function(data) {
+          if (data.wasTapped) {
+            //Notification was received on device tray and tapped by the user.
+            alert(JSON.stringify(data));
+          } else {
+            //Notification was received in foreground. Maybe the user needs to be notified.
+            alert(JSON.stringify(data));
+          }
+        },
+        function(msg) {
+          console.log('onNotification callback successfully registered: ' + msg);
+        },
+        function(err) {
+          console.log('Error registering onNotification callback: ' + err);
+        }
+      );
+
+
+      FCMPlugin.getToken(
+        function(token) {
+          alert(token);
+        },
+        function(err) {
+          console.log('error retrieving token: ' + err);
+        }
+      )
+    }
     account.startLocationWatching();
   }
 

@@ -16,7 +16,7 @@ angular.module('onTimeApp')
     $scope.account = Account;
 
     $scope.logout = function() {
-      Auth.$unauth();
+      Auth.$signOut();
       Account.fbo.$destroy();
       Account.fbo = undefined;
     };
@@ -35,7 +35,7 @@ angular.module('onTimeApp')
             newPassword: newPass
           })
           .then(function() {
-          console.log('Password changed successfully');  
+          console.log('Password changed successfully');
           //success('Password changed');
           }).catch(function(error){
           console.error("Error:",error);
@@ -61,7 +61,7 @@ angular.module('onTimeApp')
         .catch(function(error){
         console.error("Error:",error);
       });
-    
+
     };
 
     function error(err) {

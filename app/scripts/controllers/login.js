@@ -7,7 +7,7 @@
  * Manages authentication to any active providers.
  */
 angular.module('onTimeApp')
-  .controller('LoginCtrl', function($scope, Auth, $location, $q, UsersRef, $timeout) {
+  .controller('LoginCtrl', function($scope, Auth, $location, $q, UsersRef, $timeout, TestRef, $firebaseObject) {
     // $scope.username = '';
     // $scope.email = '';
     // $scope.oauthLogin = function(provider) {
@@ -23,18 +23,40 @@ angular.module('onTimeApp')
     //     rememberMe: true
     //   }).then(redirect, window.alert);
     // };
+    $scope.test = function() {
+      TestRef.once('value').then(function(snapshot) {
+        window.alert(snapshot.val());
+      });
+      $firebaseObject(TestRef).$loaded()
+        .then(function(data) {
+          $scope.login.email = data.$value; // true
+          console.debug(data);
+        }).catch(function(error) {
+          console.error('Error:', error);
+        });
+
+    };
 
     $scope.passwordLogin = function(email, pass) {
-      console.log('attempting to login');
+      console.log('attempting to login', email, pass);
       $scope.err = null;
-      Auth.$authWithPassword({
-        email: email,
-        password: pass
-      }, {
-        rememberMe: true
-      }).then(
-        redirect, window.alert
-      );
+      Auth.$signInWithEmailAndPassword(email, pass).then(
+        //success login
+        function(user) {
+          alert('success');
+          console.debug('success login >>', user);
+          redirect();
+        }
+
+      ).catch(
+        // failed login
+        window.alert);
+      //
+    //   Auth.$signInWithEmailAndPassword("my@email.com", "password").then(function(firebaseUser) {
+    //     console.log("Signed in as:", firebaseUser.uid);
+    //   }).catch(function(error) {
+    //     console.error("Authentication failed:", error);
+    //   });
     };
 
     $scope.createAccount = function() {
@@ -52,19 +74,14 @@ angular.module('onTimeApp')
         window.alert('Username is missing!');
       } else {
         console.debug('creating user>>', $scope.login.email, $scope.login.pass);
-        Auth.$createUser({
-          email: $scope.login.email,
-          password: $scope.login.pass
-        }).then(
+        Auth.$createUserWithEmailAndPassword($scope.login.email, $scope.login.pass).then(
           function(userData) {
-            console.debug('authenticating');
+            console.debug('authenticating', userDate);
             // authenticate so we have permission to write to Firebase
-            return Auth.$authWithPassword({
-              email: $scope.login.email,
-              password: $scope.login.pass
-            }, {
-              rememberMe: true
-            });
+            return Auth.$authWithPassword(
+              $scope.login.email,
+              $scope.login.pass
+            );
           }).then(
           function(authData) {
             console.debug('creating user profile', authData);
@@ -74,8 +91,8 @@ angular.module('onTimeApp')
               phone: $scope.login.phone
             });
             // .then(redirect, window.alert)
-        }).then(function(){
-            redirect();
+          }).then(function() {
+          redirect();
         }).catch(function(error) {
           console.error(error);
           switch (error.code) {

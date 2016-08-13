@@ -88,7 +88,7 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
             'fromUserName': Account.getUsername(),
             'roomId': event.meta.$id,
             'roomName': event.meta.name,
-            'time': Firebase.ServerValue.TIMESTAMP
+            'time': firebase.database.ServerValue.TIMESTAMP
           });
         });
         // }
@@ -124,7 +124,7 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
           window.alert('Error removing the invite');
         }
         //add room-id to users.rooms
-        Account.$ref().child('rooms/' + invite.roomId).set(Firebase.ServerValue.TIMESTAMP, function(error) {
+        Account.$ref().child('rooms/' + invite.roomId).set(firebase.database.ServerValue.TIMESTAMP, function(error) {
           if (error) {
             console.error(error);
             window.alert('Error removing the invite');
@@ -170,7 +170,7 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
           name: newEvent.name,
           type: (newEvent.isPrivate ? 'private' : 'public'),
           createdByUserId: Account.getId(),
-          createdAt: Firebase.ServerValue.TIMESTAMP,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
           invited: [],
           members: [],
           startDate: Date.parse(newEvent.startDate.toString().substring(0, 15))
@@ -193,14 +193,14 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
           var initMsg = {
             'from': 'info',
             'fromUsername': Account.getUsername(),
-            'time': Firebase.ServerValue.TIMESTAMP,
+            'time': firebase.database.ServerValue.TIMESTAMP,
             'message': 'Event created by ' + Account.getUsername()
           };
           // push message
           RoomMsgsRef.child(roomId).push(initMsg, function(msgsref) {
             events.openEvent(newRoomRef.key());
           });
-          Account.$ref().child('rooms').child(newRoomRef.key()).set(Firebase.ServerValue.TIMESTAMP, function(error) {
+          Account.$ref().child('rooms').child(newRoomRef.key()).set(firebase.database.ServerValue.TIMESTAMP, function(error) {
             if (error) {
               console.error(error);
               window.alert('Error removing the invite');
@@ -227,7 +227,7 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
       var msgObj = {
         'from': Account.getId(),
         'fromUsername': Account.getUsername(),
-        'time': Firebase.ServerValue.TIMESTAMP,
+        'time': firebase.database.ServerValue.TIMESTAMP,
         'message': msgText
       }
       RoomMsgsRef.child(roomId).push(msgObj, function(error) {
