@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- NOTE: keep version in sync with the wrapped firebase.js version -->
+<plugin
+		id="com.firebase.sdk"
+		version="3.0.4.2"
+		xmlns="http://apache.org/cordova/ns/plugins/1.0">
+
+	<name>Firebase</name>
+	<description>Firebase Cordova SDK</description>
+
+	<js-module name="firebase" src="www/firebase/firebase.js">
+		<clobbers target="firebase" />
+	</js-module>
+
+	<asset src="www/firebase/firebase-impl.js" target="plugins/com.firebase.sdk/www/firebase/firebase-impl.js" />
+
+</plugin>

@@ -6,10 +6,10 @@ angular.module('firebase.config', ['firebase'])
     function(FBURL) {
       'use strict';
       var config = {
-        apiKey: 'AIzaSyCZzwwM6s3noMhlp7RJFmcCqGgZk2RjqEo',
-        authDomain: 'luminous-torch-8131.firebaseapp.com',
-        databaseURL: FBURL,
-        storageBucket: 'luminous-torch-8131.appspot.com',
+        apiKey: "AIzaSyCZzwwM6s3noMhlp7RJFmcCqGgZk2RjqEo",
+        authDomain: "luminous-torch-8131.firebaseapp.com",
+        databaseURL: "https://luminous-torch-8131.firebaseio.com",
+        storageBucket: "luminous-torch-8131.appspot.com"
       };
       firebase.initializeApp(config);
     });

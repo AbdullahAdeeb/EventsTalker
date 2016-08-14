@@ -7,7 +7,7 @@
  * Manages authentication to any active providers.
  */
 angular.module('onTimeApp')
-  .controller('LoginCtrl', function($scope, Auth, $location, $q, UsersRef, $timeout, TestRef, $firebaseObject) {
+  .controller('LoginCtrl', function($scope, Auth, $location, $q, UsersRef, $timeout, TestRef, $firebaseObject, $firebaseAuth) {
     // $scope.username = '';
     // $scope.email = '';
     // $scope.oauthLogin = function(provider) {
@@ -24,9 +24,8 @@ angular.module('onTimeApp')
     //   }).then(redirect, window.alert);
     // };
     $scope.test = function() {
-      TestRef.once('value').then(function(snapshot) {
-        window.alert(snapshot.val());
-      });
+      console.log('testing 3>>>');
+
       $firebaseObject(TestRef).$loaded()
         .then(function(data) {
           $scope.login.email = data.$value; // true
@@ -35,6 +34,35 @@ angular.module('onTimeApp')
           console.error('Error:', error);
         });
 
+      TestRef.once('value').then(function(snapshot) {
+        window.alert(snapshot.val());
+      }).catch(function() {
+        window.alert('errrrrrorrr');
+      });
+
+      firebase.auth().signInAnonymously().catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        window.alert(error);
+        // ...
+      });
+
+      //   firebase.auth().signInWithEmailAndPassword("contact@abdullahadeeb.com", "Raven212").then(function(firebaseUser) {
+      //     console.log("Signed in firebase.auth:", firebaseUser.uid);
+      //   }).catch(function(error) {
+      //     console.error("Authentication failed with firbase.auth:", error);
+      //     $scope.login.email = error;
+      //   });
+    };
+
+    // login with Facebook
+    $scope.facebookLogin = function() {
+      Auth.$signInWithPopup("facebook").then(function(firebaseUser) {
+        console.log("Signed in as:", firebaseUser.uid);
+      }).catch(function(error) {
+        console.log("Authentication failed:", error);
+      })
     };
 
     $scope.passwordLogin = function(email, pass) {
@@ -51,12 +79,7 @@ angular.module('onTimeApp')
       ).catch(
         // failed login
         window.alert);
-      //
-    //   Auth.$signInWithEmailAndPassword("my@email.com", "password").then(function(firebaseUser) {
-    //     console.log("Signed in as:", firebaseUser.uid);
-    //   }).catch(function(error) {
-    //     console.error("Authentication failed:", error);
-    //   });
+
     };
 
     $scope.createAccount = function() {
@@ -208,4 +231,4 @@ angular.module('onTimeApp')
 //         }
 //
 //     };
-// });
+// });h
