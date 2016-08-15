@@ -32,25 +32,27 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
 
       e.meta.$watch(function(input) {
         //watching changes in e.meta
-        console.log(input,e);
+        console.log(input, e);
         if (input.event != 'value' || !e.map) {
           // map has not been loaded and there's no need to update markers
           console.debug(' event is not value or e.map doesnt exist');
           return;
         }
-        console.debug("event watch fired >>",e);
+        console.debug("event watch fired >>", e);
         var memIds = Object.keys(e.meta.members);
         for (var m = 0; m < memIds.length; m++) {
           if (memIds[m] == Account.getId()) {
             //set map center
             continue;
-        } else if (!e.meta.members[memIds[m]].location) {
+          } else if (!e.meta.members[memIds[m]].location) {
             //user has no location
             continue;
           } else {
             //update user location on the map
-            e.map.markers[memIds[m]].setPosition({'lng': e.meta.members[memIds[m]].location.lng,
-            'lat': e.meta.members[memIds[m]].location.lat})
+            e.map.markers[memIds[m]].setPosition({
+              'lng': e.meta.members[memIds[m]].location.lng,
+              'lat': e.meta.members[memIds[m]].location.lat
+            })
           }
         }
       });
@@ -107,7 +109,7 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
 
         });
         // events.list[e].meta.$save().then(function(ref) {
-        //   ref.key() === obj.$id; // true
+        //   ref.key === obj.$id; // true
         // }, function(error) {
         // });
       }
@@ -162,52 +164,59 @@ angular.module('onTimeApp').factory('Events', ['$location', 'Firebase', 'FireRef
     events.createEvent = function(newEvent, callback) {
       //   var self = this
       console.debug(newEvent);
-      RoomMetaRef.push({}).then(function(newRoomRef) {
+      var hostMmbr = {};
+      hostMmbr[Account.getId()] = {
+        username: Account.getUsername(),
+        role: 'Host'
+      };
 
-        // init room
-        var newRoom = {
-          id: newRoomRef.key(),
+      var newRoomRef = RoomMetaRef.push({
+          //init room
+          // id: newRoomRef.key,
           name: newEvent.name,
           type: (newEvent.isPrivate ? 'private' : 'public'),
           createdByUserId: Account.getId(),
           createdAt: firebase.database.ServerValue.TIMESTAMP,
           invited: [],
           members: [],
-          startDate: Date.parse(newEvent.startDate.toString().substring(0, 15))
-        };
-        // set creator as the host
-        newRoom.members[Account.getId()] = {
-          username: Account.getUsername(),
-          role: 'Host'
-        };
-
-        // push the new room
-        newRoomRef.set(newRoom, function(error) {
+          startDate: Date.parse(newEvent.startDate.toString().substring(0, 15)),
+          members: hostMmbr
+        },
+        function(error) {
+          //onComplete of room create
           if (error) {
             console.error(error);
             window.alert('unable to create room main.js');
+            return;
+          } else {
+            // init first room message
+            RoomMsgsRef.child(newRoomRef.key).push(
+              //init message
+              {
+                'from': 'info',
+                'fromUsername': Account.getUsername(),
+                'time': firebase.database.ServerValue.TIMESTAMP,
+                'message': 'Event created by ' + Account.getUsername()
+              },
+              function(error) {
+                if (error) {
+                  console.error(error);
+                  window.alert('Error removing the invite');
+                  return;
+                }
+                // add room to user account
+                Account.$ref().child('rooms').child(newRoomRef.key).set(firebase.database.ServerValue.TIMESTAMP, function(error) {
+                  if (error) {
+                    console.error(error);
+                    window.alert('Error removing the invite');
+                    return;
+                  }
+                  events.openEvent(newRoomRef.key);
+                });
+              });
           }
-
-          // init first room message
-          var roomId = newRoomRef.key();
-          var initMsg = {
-            'from': 'info',
-            'fromUsername': Account.getUsername(),
-            'time': firebase.database.ServerValue.TIMESTAMP,
-            'message': 'Event created by ' + Account.getUsername()
-          };
-          // push message
-          RoomMsgsRef.child(roomId).push(initMsg, function(msgsref) {
-            events.openEvent(newRoomRef.key());
-          });
-          Account.$ref().child('rooms').child(newRoomRef.key()).set(firebase.database.ServerValue.TIMESTAMP, function(error) {
-            if (error) {
-              console.error(error);
-              window.alert('Error removing the invite');
-            }
-          });
-        });
-      });
+        }
+      ); // End of creating room and init message
     }
 
     function getIndex(id) {

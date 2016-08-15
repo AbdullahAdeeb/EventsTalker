@@ -31,7 +31,7 @@ angular.module('onTimeApp')
 
 /**
  * Adds a special `whenAuthenticated` method onto $routeProvider. This special method,
- * when called, invokes Auth.$requireSignIn() service (see Auth.js).
+ * when called, invokes Auth.$requireSignIn() service (see Auth.$js).
  *
  * The promise either resolves to the authenticated user object and makes it available to
  * dependency injection (see AccountCtrl), or rejects the promise if user is not logged in,

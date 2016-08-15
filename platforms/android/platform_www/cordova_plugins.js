@@ -1,13 +1,6 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
-        "file": "plugins/com.firebase.sdk/www/firebase/firebase.js",
-        "id": "com.firebase.sdk.firebase",
-        "clobbers": [
-            "firebase"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-device/www/device.js",
         "id": "cordova-plugin-device.device",
         "clobbers": [
@@ -58,7 +51,6 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "com.firebase.sdk": "3.0.4.2",
     "cordova-plugin-device": "1.1.2",
     "cordova-plugin-background-mode": "0.6.5",
     "cordova-plugin-fcm": "1.1.4",

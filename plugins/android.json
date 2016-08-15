@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "com.firebase.sdk": {
-            "PACKAGE_NAME": "com.baramejapps.onTime"
-        },
         "cordova-plugin-background-mode": {
             "PACKAGE_NAME": "com.baramejapps.onTime"
         },

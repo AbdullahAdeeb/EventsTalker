@@ -21,13 +21,10 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
     return account.fbo.$ref();
   };
   account.getUsername = function() {
-      console.debug('getUserName() account >>',account.fbo.username,'  ||  Auth >>',Auth.$currentUser.$displayName)
     return account.fbo.username;
   };
   account.getId = function() {
-      console.debug('getId()  account >>',account.fbo.$id,'  ||  Auth >>',Auth.$currentUser)
-
-    return account.fbo.$id;
+    return Auth.$getAuth().uid;
   };
 
   // start the GeoLocation watcher and update the Account.location
@@ -61,10 +58,8 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
   }
 
   function loadAccount(authData) {
-    console.debug(Auth.$getAuth());
-    console.log("Logged in as:", authData.uid);
+    console.info('loading account =',authData);
     account.fbo = $firebaseObject(UsersRef.child(authData.uid));
-    console.debug(account);
     var myConnectionsRef = account.$ref().child('connections');
     // stores the timestamp of my last disconnect (the last time I was seen online)
     var lastOnlineRef = account.$ref().child('lastOnline');
@@ -125,13 +120,9 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
   } else {
     //not authenticated
     console.log("Logged out");
-    Auth.$onAuth(function(authData) {
+    Auth.$onAuthStateChanged(function(authData) {
       loadAccount(authData);
     });
   }
-
-
-
-
   return account;
 });

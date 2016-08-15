@@ -7,7 +7,7 @@
  * Manages authentication to any active providers.
  */
 angular.module('onTimeApp')
-  .controller('LoginCtrl', function($scope, Auth, $location, $q, UsersRef, $timeout, TestRef, $firebaseObject, $firebaseAuth) {
+  .controller('LoginCtrl', function($scope, Auth, $location, $q, UsersRef, $timeout, TestRef, $firebaseObject) {
     // $scope.username = '';
     // $scope.email = '';
     // $scope.oauthLogin = function(provider) {
@@ -38,14 +38,6 @@ angular.module('onTimeApp')
         window.alert(snapshot.val());
       }).catch(function() {
         window.alert('errrrrrorrr');
-      });
-
-      firebase.auth().signInAnonymously().catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        window.alert(error);
-        // ...
       });
 
       //   firebase.auth().signInWithEmailAndPassword("contact@abdullahadeeb.com", "Raven212").then(function(firebaseUser) {
@@ -86,7 +78,7 @@ angular.module('onTimeApp')
       $scope.err = null;
       console.log($scope.login);
       if (!$scope.login.pass) {
-        window.alert('Please enter a password!');
+        window.alert('Dude! what\'s your password?');
       } else if ($scope.login.pass !== $scope.login.confirm) {
         window.alert('Passwords do not match!');
       } else if (!$scope.login.email) {
@@ -98,59 +90,59 @@ angular.module('onTimeApp')
       } else {
         console.debug('creating user>>', $scope.login.email, $scope.login.pass);
         Auth.$createUserWithEmailAndPassword($scope.login.email, $scope.login.pass).then(
-          function(userData) {
-            console.debug('authenticating', userDate);
+          function(user) {
+            UsersRef.child(user.uid).set({
+                email: $scope.login.email,
+                username: $scope.login.username,
+                phone: $scope.login.phone,
+                photoURL: 'gs://eventstalker-c4fbc.appspot.com/ad0f_tAp.jpg'
+              },
+              // onComplete UsersRef.<uid>.set
+              function(error) {
+                if (error) {
+                  window.alert(error);
+                  return;
+                }
+                redirect();
+              });
+            console.debug('authenticating', user);
             // authenticate so we have permission to write to Firebase
-            return Auth.$authWithPassword(
-              $scope.login.email,
-              $scope.login.pass
-            );
-          }).then(
-          function(authData) {
-            console.debug('creating user profile', authData);
-            return UsersRef.child(authData.uid).set({
-              email: $scope.login.email,
-              username: $scope.login.username,
-              phone: $scope.login.phone
-            });
-            // .then(redirect, window.alert)
-          }).then(function() {
-          redirect();
-        }).catch(function(error) {
+            // return Auth.$authWithPassword(
+            //   $scope.login.email,
+            //   $scope.login.pass
+            // );
+
+
+          }).catch(function(error) {
           console.error(error);
           switch (error.code) {
-            case 'EMAIL_TAKEN':
+            case 'email-already-in-use':
               window.alert('The new user account cannot be created because the email is already in use.');
               break;
-            case 'INVALID_EMAIL':
+            case 'invalid-email':
               window.alert('The specified email is not a valid email.');
+              break;
+            case 'weak-password':
+              window.alert('Password is tooooo weak.');
               break;
             default:
               window.alert(error);
           }
           return;
         });
-
-        //
-        //   var createProfile = function(user) {
-        //     console.log('Auth worked: id= ', user.uid);
-        //     var def = $q.defer();,
-        //     function(err) {
-        //       $timeout(function() {
-        //         if (err) {
-        //           def.reject(err);
-        //         } else {
-        //           def.resolve();
-        //         }
-        //       });
-        //     });
-        //   return def.promise;
-        // };
       }
     };
 
     function redirect() {
+      console.log('redirect() user=', Auth.$getAuth());
+      // authenticate so we have permission to write to Firebase
+      // return Auth.$authWithPassword(
+      //   $scope.login.email,
+      //   $scope.login.pass
+      // );
+
       $location.path('/');
+      login.navi.popPage();
     }
   });
 

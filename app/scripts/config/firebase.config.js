@@ -1,15 +1,14 @@
 angular.module('firebase.config', ['firebase'])
-  .constant('FBURL', 'https://luminous-torch-8131.firebaseio.com')
   .constant('SIMPLE_LOGIN_PROVIDERS', ['password'])
   .constant('loginRedirectPath', '/login')
   .config(
-    function(FBURL) {
+    function() {
       'use strict';
       var config = {
-        apiKey: "AIzaSyCZzwwM6s3noMhlp7RJFmcCqGgZk2RjqEo",
-        authDomain: "luminous-torch-8131.firebaseapp.com",
-        databaseURL: "https://luminous-torch-8131.firebaseio.com",
-        storageBucket: "luminous-torch-8131.appspot.com"
+        apiKey: "AIzaSyBAEeeDn1SRqDCe7-4RR3aMnTbyCJnrbbU",
+        authDomain: "eventstalker-c4fbc.firebaseapp.com",
+        databaseURL: "https://eventstalker-c4fbc.firebaseio.com",
+        storageBucket: "eventstalker-c4fbc.appspot.com",
       };
       firebase.initializeApp(config);
     });

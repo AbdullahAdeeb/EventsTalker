@@ -22,8 +22,8 @@ angular.module('onTimeApp')
     $scope.friends = Friends;
     $scope.invites = [];
     $scope.myId = Account.getId();
-
-    thisEvent.map = undefined;
+//TODO uncomment the line below
+    // thisEvent.map = undefined;
 
     // var profile = $firebaseObject(FireRef.child('users/' + user.uid));
     // profile.$bindTo($scope, 'profile');
@@ -199,7 +199,7 @@ angular.module('onTimeApp')
     };
 
     document.addEventListener("deviceready", function() {
-        alert('device is ready and background mode is enabled');    
+        alert('device is ready and background mode is enabled');
       cordova.plugins.backgroundMode.enable();
     }, false);
 
