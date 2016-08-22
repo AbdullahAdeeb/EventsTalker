@@ -35,10 +35,10 @@ module.exports = function(config) {
       'bower_components/angular-material/angular-material.js',
       'bower_components/checklist-model/checklist-model.js',
       'bower_components/ngCordova/dist/ng-cordova.js',
-      'bower_components/onsenui/js/onsenui.js',
-      'bower_components/onsenui/js/angular-onsenui.min.js',
       'bower_components/firebase/firebase.js',
       'bower_components/angularfire/dist/angularfire.js',
+      'bower_components/onsenui/js/onsenui.js',
+      'bower_components/onsenui/js/angular-onsenui.min.js',
       'bower_components/mockfirebase/browser/mockfirebase.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
