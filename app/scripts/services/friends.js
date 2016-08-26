@@ -21,8 +21,14 @@ angular.module('onTimeApp').factory('Friends', ['UsersRef', 'Account', 'RoomMeta
     //////private functions
 
     //////public functions
-    friends.searchUsername = function(username) {
-      return $firebaseArray(UsersRef.orderByChild('username').startAt(username).endAt(username + 'z'));
+    friends.search = function(type,query) {
+        if(type == 'username' || type == 'email'){
+            return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + 'z'));
+
+        }else if(type == 'phone'){
+            return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + '9'));
+
+        }
     };
 
     friends.sendFriendRequest = function($id, username) {

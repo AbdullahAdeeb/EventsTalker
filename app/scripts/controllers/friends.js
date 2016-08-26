@@ -13,7 +13,11 @@ angular.module('onTimeApp')
     $scope.friends.requests = Friends.requests;
     $scope.$location = $location;
     $scope.search = {
-      type: 'username'
+      type: 'username',
+      query: '',
+      isEmptyQuery: true,
+      isShortQuery: false,
+      isLoading: false
     };
 
     //loading the popover to show the dropdown for search type selection
@@ -30,33 +34,67 @@ angular.module('onTimeApp')
         });
     });
 
+    // this function is called from a different scope (i.e. the popover scope) so it must be in the rootScope to be accessd by popover and this scopes.
     $rootScope.setFriendSearchType = function(type) {
-      console.info('setting search type = ', type);
-      $scope.search.type = type;
-      $scope.search.hideDropdown();
-    }
-
-
-    // Scope function definitions start
-    $scope.friends.searchUsername = function(username) {
-      console.log('searching username', username);
+        console.info('setting search type = ', type);
+        $scope.search.type = type;
+        $scope.search.hideDropdown();
+      }
+      // Scope function definitions start
+    $scope.search.executeQuery = function() {
+      $scope.search.results = []; // clear old results
+      var query = $scope.search.query;
+      var type = $scope.search.type;
+      // throw exception if any before searching
+      $scope.search.isEmptyQuery = false;
+      $scope.search.isShortQuery = false;
+      if (query.length == 0) {
+        $scope.search.isEmptyQuery = true;
+        return;
+      } else if (query.length < 3) {
+        $scope.search.isShortQuery = true;
+        return;
+      }
+      $scope.search.isLoading = true;
+      console.debug('searching ' + type + ' = ' + query);
+      $scope.search.results = Friends.search(type, query);
       // var username = $scope.frienObjectds.search.query;
       //   var username = $scope.friends.search.query;
-      $scope.friends.search.results = Friends.searchUsername(username);
-      $scope.friends.search.results.$loaded().then(function() {
-        for (var i = 0; i < $scope.friends.search.results.length; i++) {
+      $scope.search.results.$loaded().then(function() {
+        for (var i = 0; i < $scope.search.results.length; i++) {
           //   var res = $scope.friends.search.results[i];
-          var key = $scope.friends.search.results[i].$id;
+          var key = $scope.search.results[i].$id;
           if (!!Account.fbo.requests && !!Account.fbo.requests.sent && Account.fbo.requests.sent.hasOwnProperty(key)) {
-            $scope.friends.search.results[i].relation = 'requested';
+            $scope.search.results[i].relation = 'requested';
           } else if (!!Account.fbo.friends && Account.fbo.friends.hasOwnProperty(key)) {
-            $scope.friends.search.results[i].relation = 'friend';
+            $scope.search.results[i].relation = 'friend';
           } else {
-            $scope.friends.search.results[i].relation = 'stranger';
+            $scope.search.results[i].relation = 'stranger';
           }
         }
+        //done loading
+        $scope.search.isLoading = false;
       });
     };
+    // $scope.friends.searchUsername = function(username) {
+    //   console.log('searching username', username);
+    //   // var username = $scope.frienObjectds.search.query;
+    //   //   var username = $scope.friends.search.query;
+    //   $scope.friends.search.results = Friends.searchUsername(username);
+    //   $scope.friends.search.results.$loaded().then(function() {
+    //     for (var i = 0; i < $scope.friends.search.results.length; i++) {
+    //       //   var res = $scope.friends.search.results[i];
+    //       var key = $scope.friends.search.results[i].$id;
+    //       if (!!Account.fbo.requests && !!Account.fbo.requests.sent && Account.fbo.requests.sent.hasOwnProperty(key)) {
+    //         $scope.friends.search.results[i].relation = 'requested';
+    //       } else if (!!Account.fbo.friends && Account.fbo.friends.hasOwnProperty(key)) {
+    //         $scope.friends.search.results[i].relation = 'friend';
+    //       } else {
+    //         $scope.friends.search.results[i].relation = 'stranger';
+    //       }
+    //     }
+    //   });
+    // };
 
     $scope.test = function() {
       console.info('test');
@@ -102,7 +140,7 @@ angular.module('onTimeApp')
 
 angular.module('onTimeApp')
   .controller('FriendsSearchDropdownCtrl', function($scope, $rootScope) {
-      //controller to handle the search type dropdown choice
+    //controller to handle the search type dropdown choice
     $scope.setSearchType = function(type) {
       $rootScope.setFriendSearchType(type);
     };

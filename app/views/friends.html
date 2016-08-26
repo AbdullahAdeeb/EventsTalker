@@ -105,7 +105,7 @@
           <div class="left">
             <ons-back-button ng-click="main_slider.setSwipeable(true);main_tabbar.loadPage('views/friends.html');">Back</ons-back-button>
           </div>
-          <div class="center"><input type="search" id="query" name="query" placeholder="Find Friends" style="width:100%;" ng-model="friends.search.query"></div>
+          <div class="center"><input type="search" id="query" name="query" placeholder="Find Friends" style="width:100%;" ng-model="search.query" ng-change="search.executeQuery()"></div>
           <div class="right">
             <ons-toolbar-button id="dropdown-button" ng-click="search.showDropdown()">
                 <ons-icon ng-hide="search.type!='username'" icon="ion-person, material:md-account-circle" class="list__item__icon"></ons-icon>
@@ -115,7 +115,7 @@
           </div>
         </ons-toolbar>
         <ul modifier="inset">
-          <li style="display: inline;" ng-repeat="result in friends.search.results" ng-hide="result.username == account.getUsername()" class="list-item-container">
+          <li style="display: inline;" ng-repeat="result in search.results" ng-hide="result.username == account.getUsername()" class="list-item-container">
             <div class="left"><img class="list__item__thumbnail" src="images/yeoman.png"></div>
             <p>{{result.username}}</p>
             <p>{{result.email}}</p>
@@ -127,6 +127,10 @@
           </ng-switch>
         </li>
       </ul>
+      <p ng-cloak ng-hide="!search.isEmptyQuery">Use the search bar at the top to find your friends.</p>
+      <p ng-cloak ng-hide="!search.isShortQuery">Too short, need a bit more to go with the search.</p>
+      <ons-progress-circular indeterminate ng-cloak ng-hide="!search.isLoading"></ons-progress-circular>
+
     </ons-page>
   </ons-template>
   <!------------------------->
