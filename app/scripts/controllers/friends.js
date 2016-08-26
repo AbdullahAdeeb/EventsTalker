@@ -1,16 +1,43 @@
 'use strict';
 angular.module('onTimeApp')
-  .controller('FriendsCtrl', function($scope, Auth, Account, $location, Friends) {
+  .controller('FriendsCtrl', function($scope, $rootScope, Auth, Account, $location, Friends) {
     /// TODO FOR TESTING ////
     window.s = $scope;
     $scope.account = Account;
     /////////////////////////////////
 
+    console.debug('this friends ctrl');
+
     $scope.friends = {};
     $scope.friends.list = Friends.list;
     $scope.friends.requests = Friends.requests;
     $scope.$location = $location;
-    console.log('friends ctrlr is loaded');
+    $scope.search = {
+      type: 'username'
+    };
+
+    //loading the popover to show the dropdown for search type selection
+    ons.ready(function() {
+      ons.createPopover('friends.search.dropdown').then(
+        function(popover) {
+          var dropdownButton = document.querySelector("#dropdown-button");
+          $scope.search.showDropdown = function() {
+            popover.show(dropdownButton);
+          };
+          $scope.search.hideDropdown = function() {
+            popover.hide();
+          }
+        });
+    });
+
+    $rootScope.setFriendSearchType = function(type) {
+      console.info('setting search type = ', type);
+      $scope.search.type = type;
+      $scope.search.hideDropdown();
+    }
+
+
+    // Scope function definitions start
     $scope.friends.searchUsername = function(username) {
       console.log('searching username', username);
       // var username = $scope.frienObjectds.search.query;
@@ -32,7 +59,8 @@ angular.module('onTimeApp')
     };
 
     $scope.test = function() {
-      window.alert('test');
+      console.info('test');
+      console.log($scope.search);
     };
 
     $scope.sendFriendRequest = function($id, username) {
@@ -68,6 +96,15 @@ angular.module('onTimeApp')
         return false;
       }
       return !!Friends.requests.sent;
+    };
+  });
+
+
+angular.module('onTimeApp')
+  .controller('FriendsSearchDropdownCtrl', function($scope, $rootScope) {
+      //controller to handle the search type dropdown choice
+    $scope.setSearchType = function(type) {
+      $rootScope.setFriendSearchType(type);
     };
   });
 

@@ -2,49 +2,11 @@
 <!-- Friends Wrapper -->
 <!------------------------->
 <ons-page id="friends.wrapper" ng-controller="FriendsCtrl">
-  <!-- <ons-toolbar>
-    <div class="left">
-      <ons-toolbar-button ng-click="main_slider.toggleMenu()">
-        <ons-icon icon="ion-navicon"></ons-icon>
-      </ons-toolbar-button>
-    </div>
-    <div class="center"> -->
-      <!--    <div class="right">
-      <ons-if platform="firefox safari chrome ie edge ios">
-        <ons-toolbar-button
-          ng-click="main_slider.setSwipeable(false);main_tabbar.loadPage("friends.search");">
-          Add
-        </ons-toolbar-button>
-      </ons-if>
-    </div> -->
-      <ons-tabbar position="top">
-        <ons-tab page="friends.list" label="Friends" active="true"></ons-tab>
-        <ons-tab page="friends.requests" label="Requests"></ons-tab>
-        <ons-tab page="friends.groups" label="Groups"></ons-tab>
-      </ons-tabbar>
-      <!--
-      <div class="tab-bar tab-bar--top tab-bar--top-border">
-        <label class="tab-bar__item tab-bar--top-border__item">
-          <input type="radio" name="top-tab-bar-b" checked="checked">
-          <button class="tab-bar__button tab-bar--top-border__button">
-            Friends
-          </button>
-        </label>
-        <label class="tab-bar__item tab-bar--top-border__item">
-          <input type="radio" name="top-tab-bar-b">
-          <button class="tab-bar__button tab-bar--top-border__button">
-            Requests
-          </button>
-        </label>
-        <label class="tab-bar__item tab-bar--top-border__item">
-          <input type="radio" name="top-tab-bar-b">
-          <button class="tab-bar__button tab-bar--top-border__button">
-            Groups
-          </button>
-        </label>
-      </div> -->
-    <!-- </div>
-  </ons-toolbar> -->
+  <ons-tabbar var="friends_tabbar" position="top">
+    <ons-tab page="friends.list" label="Friends" active="true"></ons-tab>
+    <ons-tab page="friends.requests" label="Requests"></ons-tab>
+    <ons-tab page="friends.groups" label="Groups"></ons-tab>
+  </ons-tabbar>
 </ons-page>
 
 <!------------------------->
@@ -65,11 +27,11 @@
       </div>
     </ons-list-item>
   </ons-list>
-  <ons-if platform="firefox safari chrome ie edge android">
-    <ons-button class="fab" ng-click="main_slider.setSwipeable(false);main_tabbar.loadPage("friends.search");">
-      +
-    </ons-button>
-  </ons-if>
+  <!-- <ons-if platform="firefox safari chrome ie edge android"> -->
+  <ons-button class="fab" ng-click="main_tabbar.loadPage('friends.search');">
+    +
+  </ons-button>
+  <!-- </ons-if> -->
 </ons-template>
 <!------------------------->
 <!-- Requests List -->
@@ -141,12 +103,14 @@
       <ons-page ng-controller="FriendsCtrl">
         <ons-toolbar>
           <div class="left">
-            <ons-back-button ng-click="main_slider.setSwipeable(true);main_tabbar.loadPage("views/friends.html");">Back</ons-back-button>
+            <ons-back-button ng-click="main_slider.setSwipeable(true);main_tabbar.loadPage('views/friends.html');">Back</ons-back-button>
           </div>
           <div class="center"><input type="search" id="query" name="query" placeholder="Find Friends" style="width:100%;" ng-model="friends.search.query"></div>
           <div class="right">
-            <ons-toolbar-button ng-click="friends.searchUsername(friends.search.query);">
-              <ons-icon icon="fa-search"></ons-icon>
+            <ons-toolbar-button id="dropdown-button" ng-click="search.showDropdown()">
+                <ons-icon ng-hide="search.type!='username'" icon="ion-person, material:md-account-circle" class="list__item__icon"></ons-icon>
+                <ons-icon ng-hide="search.type!='email'" icon="ion-email, material:md-email" class="list__item__icon"></ons-icon>
+                <ons-icon ng-hide="search.type!='phone'" icon="ion-ios-telephone, material:md-dialpad" class="list__item__icon"></ons-icon>
             </ons-toolbar-button>
           </div>
         </ons-toolbar>
@@ -164,4 +128,37 @@
         </li>
       </ul>
     </ons-page>
+  </ons-template>
+  <!------------------------->
+  <!-- Search Type Dropdown -->
+  <!------------------------->
+  <ons-template id="friends.search.dropdown" >
+    <ons-popover cancelable direction="down" ng-controller="FriendsSearchDropdownCtrl">
+      <ons-list>
+        <ons-list-item tappable ng-click="setSearchType('username');">
+          <div class="left">
+            <ons-icon icon="ion-person, material:md-account-circle" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center">
+            Username
+          </div>
+        </ons-list-item>
+        <ons-list-item tappable ng-click="setSearchType('email');">
+          <div class="left">
+            <ons-icon icon="ion-email, material:md-email" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center">
+            Email
+          </div>
+        </ons-list-item>
+        <ons-list-item tappable ng-click="setSearchType('phone');">
+          <div class="left">
+            <ons-icon icon="ion-ios-telephone, material:md-dialpad" class="list__item__icon"></ons-icon>
+          </div>
+          <div class="center">
+            Phone Number
+          </div>
+        </ons-list-item>
+      </ons-list>
+    </ons-popover>
   </ons-template>
