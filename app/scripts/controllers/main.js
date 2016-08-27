@@ -31,7 +31,6 @@ angular.module('onTimeApp')
     ////////////////////////
     $scope.account = Account;
     $scope.$location = $location;
-    $scope.awesomeThings = 'Awesome';
     $scope.events = {};
     $scope.events.list = Events.list;
     $scope.events.discover = Events.discover;
@@ -52,5 +51,15 @@ angular.module('onTimeApp')
 
 
     $scope.openEvent = Events.openEvent;
+    //default values for new event
+    $scope.newEvent = {
+      isPrivate: true,
+      isAdvancedOptions :false,
+      isChat: true,
+      isPoll: true,
+      isMediaShare: true,
+      isBillSplit: true,
+      isLiveTracking: true
+    };
 
   });

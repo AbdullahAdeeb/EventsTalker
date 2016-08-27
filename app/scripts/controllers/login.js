@@ -63,7 +63,6 @@ angular.module('onTimeApp')
       Auth.$signInWithEmailAndPassword(email, pass).then(
         //success login
         function(user) {
-          alert('success');
           console.debug('success login >>', user);
           redirect();
         }
