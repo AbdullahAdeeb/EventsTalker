@@ -105,12 +105,12 @@
           <div class="left">
             <ons-back-button ng-click="main_slider.setSwipeable(true);main_tabbar.loadPage('views/friends.html');">Back</ons-back-button>
           </div>
-          <div class="center"><input type="search" id="query" name="query" placeholder="Find Friends" style="width:100%;" ng-model="search.query" ng-change="search.executeQuery()"></div>
+          <div class="center"><input type="search" id="query" name="query" placeholder="Find Friends" style="width:100%;height:98%;" ng-model="search.query" ng-change="search.executeQuery()"></div>
           <div class="right">
-            <ons-toolbar-button id="dropdown-button" ng-click="search.showDropdown()">
-                <ons-icon ng-hide="search.type!='username'" icon="ion-person, material:md-account-circle" class="list__item__icon"></ons-icon>
-                <ons-icon ng-hide="search.type!='email'" icon="ion-email, material:md-email" class="list__item__icon"></ons-icon>
-                <ons-icon ng-hide="search.type!='phone'" icon="ion-ios-telephone, material:md-dialpad" class="list__item__icon"></ons-icon>
+            <ons-toolbar-button id="dropdown-button" ng-click="search.showDropdown()" style="border-left:white dashed 1px;">
+                <ons-icon class="center" ng-hide="search.type!='username'" icon="ion-person, material:md-account-circle" class="list__item__icon"></ons-icon>
+                <ons-icon class="center" ng-hide="search.type!='email'" icon="ion-email, material:md-email" class="list__item__icon"></ons-icon>
+                <ons-icon class="center" ng-hide="search.type!='phone'" icon="ion-ios-telephone, material:md-dialpad" class="list__item__icon"></ons-icon>
             </ons-toolbar-button>
           </div>
         </ons-toolbar>
@@ -119,15 +119,18 @@
             <div class="left"><img class="list__item__thumbnail" src="images/yeoman.png"></div>
             <p>{{result.username}}</p>
             <p>{{result.email}}</p>
+            <p>{{result.phone}}</p>
             <ng-switch on="result.relation">
-              <ons-button ng-switch-when="stranger" type="button" modifier="outline" ng-click="sendFriendRequest(result.$id,result.username)">Buddy up</ons-button>
+              <ons-button ng-switch-when="stranger" type="button" modifier="outline" ng-click="sendFriendRequest(result.$id,result.username)">Add Friend</ons-button>
               <ons-button ng-switch-when="friend" type="button" ng-click="deleteFriend(result.$id,result.username)">Unfriend</ons-button>
             </ons-col>
             <ons-button ng-switch-when="requested" type="button" ng-click="cancelFriendRequest(result.$id,result.username)">Cancel</ons-button>
           </ng-switch>
         </li>
       </ul>
-      <p ng-cloak ng-hide="!search.isEmptyQuery">Use the search bar at the top to find your friends.</p>
+      <div ng-cloak ng-hide="!search.isEmptyQuery">
+          <div><p style="width:85%;">Use the search bar at the top to find your friends.</p></div>
+          <div style="position:absolute;top:5px;right:0px;"><ons-icon style="position:absolute;right:20px;" size="42px;" icon="hand-o-up"></ons-icon><p>Choose<br>your<br>search<br>type</p></div>
       <p ng-cloak ng-hide="!search.isShortQuery">Too short, need a bit more to go with the search.</p>
       <ons-progress-circular indeterminate ng-cloak ng-hide="!search.isLoading"></ons-progress-circular>
 

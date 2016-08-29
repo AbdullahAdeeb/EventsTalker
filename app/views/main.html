@@ -211,15 +211,21 @@
         <ons-back-button ng-click="main_slider.setSwipeable(true);main_slider.setMainPage('events.wrapper');">Back</ons-back-button>
       </div>
       <div class="center">New Event</div>
+
+      <div class="right">
+        <ons-if platform="ios">
+          <ons-toolbar-button ng-click="createEvent(newEvent);">Create</ons-toolbar-button>
+        </ons-if>
+      </div>
     </ons-toolbar>
     <ons-list>
-        <br>
+      <br>
       <ons-list-item>
         <div class="center">
           <ons-input style="width:95%;" type="text" ng-model="newEvent.name" placeholder="Event Name"></ons-input>
         </div>
       </ons-list-item>
-<br>
+      <br>
       <ons-list-item>
         <div class="center">
           Private
@@ -231,7 +237,7 @@
       <br>
       <ons-button ng-click="newEvent.isAdvancedOption = !newEvent.isAdvancedOption;" style="text-align:left;" modifier="quiet" class="forgot-password">Toggle Advanced Options?</ons-button>
       <div ng-cloak ng-hide="!newEvent.isAdvancedOption">
-          <hr>
+        <hr>
         <ons-list-item>
           <div class="center">
             Chat
@@ -274,8 +280,10 @@
         </ons-list-item>
       </div>
     </ons-list>
-    <ons-button style="position:fixed;bottom:0px;padding:10px 0px 15px 0px;font-size:2em;" ng-click="createEvent(newEvent);" modifier="large--cta" class="login-button">
-      <ons-ripple></ons-ripple>
-      Create</ons-button>
+    <ons-if platform="firefox safari chrome ie edge android">
+      <ons-button style="position:fixed;bottom:0px;padding:10px 0px 15px 0px;font-size:2em;" ng-click="createEvent(newEvent);" modifier="large--cta" class="login-button">
+        <ons-ripple></ons-ripple>
+        Create</ons-button>
+    </ons-if>
   </ons-page>
 </ons-template>
