@@ -8,9 +8,9 @@
 // 'test/spec/**/*.js'
 
 module.exports = function(grunt) {
-
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
+  grunt.loadNpmTasks('assemble-less');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
@@ -66,14 +66,18 @@ module.exports = function(grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 9000,
+        port: 2012,
         // Change this to '0.0.0.0' to access the server from outside.
         hostname: 'localhost',
         livereload: 35729
       },
       livereload: {
         options: {
-          open: true,
+          open: {
+            target: 'http://localhost:2012', // target url to open
+            appName: 'Chrome', // name of the app that opens, ie: open, start, xdg-open
+            callback: function() {} // called when the app has opened
+          },
           middleware: function(connect) {
             return [
               connect.static('.tmp'),
@@ -200,7 +204,7 @@ module.exports = function(grunt) {
           }
         }
       },
-      sass: {
+      compass: {
         src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
         ignorePath: /(\.\.\/){1,2}bower_components\//
       }
@@ -480,7 +484,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('cp', [
-      'clean:dist',
+    'clean:dist',
     'copy:dist',
   ]);
 };

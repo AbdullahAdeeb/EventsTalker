@@ -6,7 +6,7 @@ angular.module('onTimeApp')
     $scope.account = Account;
     /////////////////////////////////
 
-    console.debug('this friends ctrl');
+    console.debug('Friends ctrlr loaded');
 
     $scope.friends = {};
     $scope.friends.list = Friends.list;
@@ -39,6 +39,7 @@ angular.module('onTimeApp')
         console.info('setting search type = ', type);
         $scope.search.type = type;
         $scope.search.hideDropdown();
+        $scope.search.executeQuery();
       }
       // Scope function definitions start
     $scope.search.executeQuery = function() {
@@ -57,10 +58,11 @@ angular.module('onTimeApp')
       }
       $scope.search.isLoading = true;
       console.debug('searching ' + type + ' = ' + query);
-      $scope.search.results = Friends.search(type, query);
+      var results = Friends.search(type, query);
       // var username = $scope.frienObjectds.search.query;
       //   var username = $scope.friends.search.query;
-      $scope.search.results.$loaded().then(function() {
+      results.$loaded().then(function() {
+        $scope.search.results = results.splice(0);
         for (var i = 0; i < $scope.search.results.length; i++) {
           //   var res = $scope.friends.search.results[i];
           var key = $scope.search.results[i].$id;
@@ -76,50 +78,30 @@ angular.module('onTimeApp')
         $scope.search.isLoading = false;
       });
     };
-    // $scope.friends.searchUsername = function(username) {
-    //   console.log('searching username', username);
-    //   // var username = $scope.frienObjectds.search.query;
-    //   //   var username = $scope.friends.search.query;
-    //   $scope.friends.search.results = Friends.searchUsername(username);
-    //   $scope.friends.search.results.$loaded().then(function() {
-    //     for (var i = 0; i < $scope.friends.search.results.length; i++) {
-    //       //   var res = $scope.friends.search.results[i];
-    //       var key = $scope.friends.search.results[i].$id;
-    //       if (!!Account.fbo.requests && !!Account.fbo.requests.sent && Account.fbo.requests.sent.hasOwnProperty(key)) {
-    //         $scope.friends.search.results[i].relation = 'requested';
-    //       } else if (!!Account.fbo.friends && Account.fbo.friends.hasOwnProperty(key)) {
-    //         $scope.friends.search.results[i].relation = 'friend';
-    //       } else {
-    //         $scope.friends.search.results[i].relation = 'stranger';
-    //       }
-    //     }
-    //   });
-    // };
 
     $scope.test = function() {
       console.info('test');
       console.log($scope.search);
     };
 
-    $scope.sendFriendRequest = function($id, username) {
-      console.log('sending friend request to >>' + $id);
-      console.log(Account);
-      Friends.sendFriendRequest($id, username);
-      //   $scope.friends.search.results[i].isRequested =
-
+    $scope.sendFriendRequest = function($id, username, result) {
+      console.info('sending friend request to >>' + result);
+      Friends.sendFriendRequest($id, username, result);
+      result.relation = 'requested';
     };
-
-
     //reqId is requster user $id and the request ID
     $scope.acceptFriendRequest = function(reqId, request) {
       Friends.acceptFriendRequest(reqId, request);
+
       // $scope.friends.list.$add({Account.requests.received[reqId].$id}); // remove firend sent request
     };
     $scope.ignoreFriendRequest = function(reqId, request) {
       Friends.ignoreFriendRequest(reqId, request);
     };
 
-    $scope.cancelFriendRequest = function(reqId, request) {
+    $scope.cancelFriendRequest = function(reqId, request, result) {
+      console.info('this is result', result);
+      result.relation = 'stranger';
       Friends.cancelFriendRequest(reqId, request);
     };
 

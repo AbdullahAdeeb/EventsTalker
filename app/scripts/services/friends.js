@@ -21,28 +21,30 @@ angular.module('onTimeApp').factory('Friends', ['UsersRef', 'Account', 'RoomMeta
     //////private functions
 
     //////public functions
-    friends.search = function(type,query) {
-        if(type == 'username' || type == 'email'){
-            return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + 'z'));
+    friends.search = function(type, query) {
+      if (type == 'username' || type == 'email') {
+        return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + 'z'));
 
-        }else if(type == 'phone'){
-            return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + '9'));
+      } else if (type == 'phone') {
+        return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + '9'));
 
-        }
+      }
     };
 
-    friends.sendFriendRequest = function($id, username) {
+    friends.sendFriendRequest = function($id, username, result) {
+      Account.getId();
       UsersRef.child($id).child('requests/received').child(Account.getId()).set(Account.getUsername(), function(error) {
         if (error) {
           window.alert('Ops! :S Unable to send the request.');
           return;
         }
         friends.requests.$ref().child('sent').child($id).set(username, function(error) {
+          // onFailure
           if (error) {
             window.alert(error);
             return;
           }
-          window.alert('request sent');
+          //onSuccess
         });
       });
     };
@@ -58,12 +60,14 @@ angular.module('onTimeApp').factory('Friends', ['UsersRef', 'Account', 'RoomMeta
 
       // $scope.friends.list.$add({Account.requests.received[reqId].$id}); // remove firend sent request
     };
+
     friends.ignoreFriendRequest = function(reqId, request) {
       var temp = request;
       friends.requests.received[reqId] = null;
       friends.requests.$save();
       UsersRef.child(reqId).child('requests').child('sent').child(Account.getId()).remove();
     };
+
     friends.cancelFriendRequest = function(reqId, request) {
       var temp = request;
       friends.requests.sent[reqId] = null;

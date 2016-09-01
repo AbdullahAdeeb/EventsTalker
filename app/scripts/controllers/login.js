@@ -94,7 +94,7 @@ angular.module('onTimeApp')
                 email: $scope.login.email,
                 username: $scope.login.username,
                 phone: $scope.login.phone,
-                photoURL: 'gs://eventstalker-c4fbc.appspot.com/ad0f_tAp.jpg'
+                photoURL: 'https://firebasestorage.googleapis.com/v0/b/eventstalker-c4fbc.appspot.com/o/ad0f_tAp.jpg?alt=media&token=58773a0d-48e4-47ac-87ae-9e863054da6b'
               },
               // onComplete UsersRef.<uid>.set
               function(error) {

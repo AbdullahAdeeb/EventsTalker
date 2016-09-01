@@ -89,10 +89,10 @@ angular.module('onTimeApp')
       templateUrl: 'views/account.html',
       controller: 'AccountCtrl'
     })
-    // .whenAuthenticated('/friends', {
-    //   templateUrl: 'views/friends.html',
-    //   controller: 'FriendsCtrl'
-    // })
+    .whenAuthenticated('/friends', {
+      templateUrl: 'views/friends.html',
+      controller: 'FriendsCtrl'
+    })
     .otherwiseWarn({
       redirectTo: '/'
     });

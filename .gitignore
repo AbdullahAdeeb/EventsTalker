@@ -4,3 +4,5 @@ www
 .tmp
 .sass-cache
 bower_components
+platforms
+plugins
