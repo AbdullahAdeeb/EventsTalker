@@ -122,7 +122,7 @@
       <ons-list-item style="display: inline;" ng-repeat="result in search.results" ng-hide="result.username == account.getUsername()" class="list-item-container">
         <ons-row style="padding:20px;">
           <ons-col>
-            <img src="{{result.photoURL}}" class="thumbnail">
+            <img ng-src="{{result.photoURL}}" class="thumbnail">
           </ons-col>
           <ons-col>
             <div class="name">
@@ -154,8 +154,7 @@
         </div>
       </div>
       <p ng-cloak ng-hide="!search.isShortQuery">Too short, need a bit more to go with the search.</p>
-      <ons-progress-circular indeterminate ng-cloak ng-hide="!search.isLoading"></ons-progress-circular>
-
+          <ons-progress-circular indeterminate ng-cloak ng-hide="!search.isLoading" style="padding: 47%"></ons-progress-circular>
   </ons-page>
 </ons-template>
 

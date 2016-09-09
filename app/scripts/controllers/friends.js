@@ -7,7 +7,6 @@ angular.module('onTimeApp')
     /////////////////////////////////
 
     console.debug('Friends ctrlr loaded');
-
     $scope.friends = {};
     $scope.friends.list = Friends.list;
     $scope.friends.requests = Friends.requests;

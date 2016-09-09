@@ -7,22 +7,50 @@
  * A demo of using AngularFire to manage a synchronized list.
  */
 angular.module('onTimeApp')
-  .controller('EventCtrl', function($scope, Account, Friends, Events, $location, $routeParams, $timeout, $cordovaGeolocation) {
+  .controller('EventCtrl', function($scope, Account, Friends, Event, $location, $routeParams, $timeout, $cordovaGeolocation) {
     $scope.$location = $location;
-    /////// test/ /////
+    /////// test //////
     window.s = $scope;
-    $scope.Events = Events;
+    $scope.Event = Event;
     $scope.Account = Account;
     ////////////////////////
 
     var roomId = $routeParams.roomId; //get the id from the url
 
-    var thisEvent = Events.join(roomId);
+    var thisEvent = Event.join(roomId);
+    $scope.thisEvent = thisEvent; //TODO delete this line for testing
+    $scope.meta = thisEvent.meta;
+    $scope.chat = {
+      messages : thisEvent.messages,
+      sendMessage : function(msgText) {
+        if (msgText) {
+          Event.sendMessage(roomId, msgText);
+        }
+      }
+    };
+
+    $scope.map = {
+
+    };
+    $scope.members = {
+
+    };
+    $scope.poll = {
+
+    };
+    $scope.paySplit = {
+
+    };
+    $scope.media = {
+
+    };
+
     $scope.event = thisEvent;
-    $scope.friends = Friends;
+    $scope.friends = Friends.list;
     $scope.invites = [];
+
     $scope.myId = Account.getId();
-//TODO uncomment the line below
+    //TODO uncomment the line below
     // thisEvent.map = undefined;
 
     // var profile = $firebaseObject(FireRef.child('users/' + user.uid));
@@ -56,15 +84,11 @@ angular.module('onTimeApp')
     //   });
     // });
     // provide a method for adding a message
-    $scope.sendMessage = function(msgText) {
-      if (msgText) {
-        Events.sendMessage(roomId, msgText);
-      }
-    };
 
-    $scope.inviteMembers = function() {
+
+    $scope.sendInvite = function() {
       console.log('invite members ', $scope.invites);
-      Events.inviteMember(thisEvent, $scope.invites);
+      Event.sendInvite(thisEvent, $scope.invites);
       dialog.hide();
     };
 
@@ -199,7 +223,7 @@ angular.module('onTimeApp')
     };
 
     document.addEventListener("deviceready", function() {
-        alert('device is ready and background mode is enabled');
+      alert('device is ready and background mode is enabled');
       cordova.plugins.backgroundMode.enable();
     }, false);
 

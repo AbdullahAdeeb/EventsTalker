@@ -7,16 +7,13 @@
  * # MainCtrl
  * Controller of the onTimeApp
  */
-// ---- from firechat js to angular ---- //
-// _firebase = FireRef
-//
 ////////////////////////////////////////////
 angular.module('onTimeApp')
   .controller('MainCtrl', function(
     Account,
-    Events,
-    //   user,
+    Main,
     //   Auth,
+    //   user,
     UsersRef,
     RoomMetaRef,
     RoomMsgsRef,
@@ -31,35 +28,28 @@ angular.module('onTimeApp')
     ////////////////////////
     $scope.account = Account;
     $scope.$location = $location;
-    $scope.events = {};
-    $scope.events.list = Events.list;
-    $scope.events.discover = Events.discover;
-    $scope.events.invites = Events.invites;
-    $scope.createEvent = Events.createEvent;
-    $scope.acceptInvite = Events.acceptInvite;
-    $scope.rejectInvite = Events.rejectInvite;
+    $scope.events = {
+      list : Main.list, // Async
+      discover : Main.discover,
+      invites : Main.invites
+    };
+    $scope.createEvent = Main.createEvent;
+    $scope.acceptInvite = Main.acceptInvite;
+    $scope.rejectInvite = Main.rejectInvite;
     $scope.todaysDate = new Date();
-    $scope.test = function() {
-      window.alert('test2');
-    };
 
-    $scope.reload = function() {
-      //   chat.getRoomList(function(events) {
-      //     $scope.eventsList = events;
-      //   });
-    };
-
-
-    $scope.openEvent = Events.openEvent;
+    $scope.openEvent = Main.openEvent;
     //default values for new event
     $scope.newEvent = {
       isPrivate: true,
-      isAdvancedOptions :false,
+      isAdvancedOptions: false,
       isChat: true,
       isPoll: true,
       isMediaShare: true,
       isBillSplit: true,
       isLiveTracking: true
     };
+
+    angular.module('onTimeApp').controller('EventCtrl', function($scope){});
 
   });

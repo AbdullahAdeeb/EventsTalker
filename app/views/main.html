@@ -78,21 +78,21 @@
     </div>
   </ons-toolbar>
   <ons-list>
-    <ons-list-item ng-repeat="event in events.list | orderBy:'meta.startDate'" class="list-item-container" ng-click="openEvent(event.meta.id);">
+    <ons-list-item ng-repeat="event in events.list | orderBy:'roomName'" class="list-item-container" ng-click="openEvent(event.$id);">
       <ons-row>
         <ons-col width="95px">
           <img src="images/yeoman.png" class="thumbnail">
         </ons-col>
         <ons-col>
           <div class="name">
-            {{event.meta.name}}
+            {{event.roomName}}
           </div>
-          <div class="location">
+          <!-- <div class="location">
             <i class="fa fa-map-marker"></i>
             {{event.meta.type}}
-          </div>
+          </div> -->
           <div class="desc">
-            {{event.meta.id}}
+            {{event.$id}}
           </div>
         </ons-col>
         <ons-col width="40px"></ons-col>

@@ -27,6 +27,7 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
     return Auth.$getAuth().uid;
   };
 
+
   // start the GeoLocation watcher and update the Account.location
   account.startLocationWatching = function() {
     var watchOptions = {
@@ -58,7 +59,7 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
   }
 
   function loadAccount(authData) {
-    console.info('loading account =',authData);
+    console.info('loading account =', authData);
     account.fbo = $firebaseObject(UsersRef.child(authData.uid));
     var myConnectionsRef = account.$ref().child('connections');
     // stores the timestamp of my last disconnect (the last time I was seen online)
