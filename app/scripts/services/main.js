@@ -14,7 +14,8 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
       var newRoomKey = RoomMetaRef.push().key;
 
       console.debug(newEvent);
-      var hostMmbr = {};
+
+      var hostMmbr = {}
       hostMmbr[Account.getId()] = {
         username: Account.getUsername(),
         role: 'Host'
@@ -32,7 +33,7 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
         createdByUserId: Account.getId(),
         createdAt: firebase.database.ServerValue.TIMESTAMP,
         invited: [],
-        members: [hostMmbr]
+        members: hostMmbr
           // startDate: Date.parse(newEvent.startDate.toString().substring(0, 15))
       };
 
@@ -49,9 +50,9 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
         'roomName': newRoomMeta.name
       };
       var updates = {};
-      updates['/room-metadata/' + newRoomKey] = newRoomMeta;
-      updates['/room-messages/' + newRoomKey] = [newRoomMessage];
-      updates['/users/' + Account.getId() + '/rooms/' + newRoomKey] = userNewRoom;
+      updates['/'+RoomMetaRef.key+'/' + newRoomKey] = newRoomMeta;
+      updates['/'+RoomMsgsRef.key+'/' + newRoomKey] = [newRoomMessage];
+      updates['/'+UsersRef.key+'/' + Account.getId() + '/rooms/' + newRoomKey] = userNewRoom;
       FireRef.update(updates, function(error) {
         if (error) {
           console.error(error);
@@ -157,24 +158,24 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
 
 
 
-    Account.broadcastLocationCallback = function(position) {
-      // for (var e = 0; e < mainServices.list.length; e++) {
-      //   console.debug('broadcasting location to ', mainServices.list[e], ' location =', position);
-      //   mainServices.list[e].meta.$ref().child('members').child(Account.getId()).child('location').set(position, function(error) {
-      //     if (error) {
-      //       console.log('Error:', error);
-      //       return;
-      //     }
-      //     console.info('location broadcasted to event =', mainServices.list[e], position);
-      //
-      //   });
-      //   // mainServices.list[e].meta.$save().then(function(ref) {
-      //   //   ref.key === obj.$id; // true
-      //   // }, function(error) {
-      //   // });
-      // }
-    }
+    Account.addLocationChangeListener(function(){
 
+       // for (var e = 0; e < mainServices.list.length; e++) {
+       //   console.debug('broadcasting location to ', mainServices.list[e], ' location =', position);
+       //   mainServices.list[e].meta.$ref().child('members').child(Account.getId()).child('location').set(position, function(error) {
+       //     if (error) {
+       //       console.log('Error:', error);
+       //       return;
+       //     }
+       //     console.info('location broadcasted to event =', mainServices.list[e], position);
+       //
+       //   });
+       //   // mainServices.list[e].meta.$save().then(function(ref) {
+       //   //   ref.key === obj.$id; // true
+       //   // }, function(error) {
+       //   // });
+       // }
+    });
     function removeInvite(invite) {
       //remove user-id from the room-meta/invited
       console.debug('removing the invite from user', invite);
@@ -186,7 +187,7 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
           console.debug('removing the invite from user', invite);
           //remove room-id from users
           Account.$ref().child('invites/' + invite.$id).remove(function(error) {
-            if (error) {
+        if (error) {
               console.error(error);
               window.alert('Error removing the invite from user');
             }

@@ -1,188 +1,125 @@
-<ons-sliding-menu
-  id="event_slider"
-  main-page="chat"
-  menu-page="slider"
-  side="right"
-  type="push"
-  max-slide-distance="50%"
-  var="event_slider"
-  on-preclose="sliderPostclose"
-  ons-postclose="sliderPostclose"
-  ons-preopen="sliderPreopen"
-  ons-postclose="sliderPreclose"></ons-sliding-menu>
 <!------------------------->
-<!-- Event Slider -->
+<!-- EVENT PAGES HUD -->
 <!------------------------->
-<ons-template id="slider">
-  <ons-list>
-    <ons-scroller >
-      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('info', {closeMenu: true})">
-        <ons-icon icon="ion-clipboard"></ons-icon>&nbsp;&nbsp;Info
+<ons-page>
+  <!-- Event Toolbar -->
+  <ons-toolbar>
+    <div class="left">
+      <ons-toolbar-button ng-click="$location.path('/')">
+        <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
+      </ons-toolbar-button>
+    </div>
+    <div class="center">{{meta.name}}</div>
+    <div class="right">
+      <ons-toolbar-button ng-click="slider.togglePeek();">
+        <ons-icon icon="ion-navicon-round" style="vertical-align: -4px; font-size: 32px;"></ons-icon>
+      </ons-toolbar-button>
+    </div>
+  </ons-toolbar>
+  <!-- Event Peek Slider -->
+  <ons-list id="peek_slider" var="peek_slider">
+    <ons-scroller>
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('info');" ng-class="{active: nav.topPage.name=='info'}">
+        <ons-icon icon="ion-clipboard"></ons-icon>
+        <div class="peek-item-text">Info</div>
       </ons-list-item>
-      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('chat', {closeMenu: true})">
-        <ons-icon icon="ion-chatboxes"></ons-icon>&nbsp;&nbsp;Chat
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('chat')" ng-class="{active: nav.topPage.name=='chat'}">
+        <ons-icon icon="ion-chatboxes"></ons-icon>
+        <div class="peek-item-text">Chat</div>
       </ons-list-item>
-      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('map', {closeMenu: true})">
-        <ons-icon icon="ion-map"></ons-icon>&nbsp;&nbsp;Map
-      </ons-list-item>      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('members', {closeMenu: true})">
-        <ons-icon icon="ion-ios-people"></ons-icon>&nbsp;&nbsp;Members
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('map')" ng-class="{active: nav.topPage.name=='map'}">
+        <ons-icon icon="ion-map"></ons-icon>
+        <div class="peek-item-text">Map</div>
       </ons-list-item>
-      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('placeholder', {closeMenu: true})">
-        <ons-icon icon="fa-question-circle"></ons-icon>&nbsp;&nbsp;Polls
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('members')" ng-class="{active: nav.topPage.name=='members'}">
+        <ons-icon icon="ion-ios-people"></ons-icon>
+        <div class="peek-item-text">Members</div>
       </ons-list-item>
-      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('placeholder', {closeMenu: true})">
-        <ons-icon icon="ion-images"></ons-icon>&nbsp;&nbsp;Media Share
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
+        <ons-icon icon="fa-question-circle"></ons-icon>
+        <div class="peek-item-text">Polls</div>
       </ons-list-item>
-      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('placeholder', {closeMenu: true})">
-        <ons-icon icon="ion-card"></ons-icon>&nbsp;&nbsp;Pay Split
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
+        <ons-icon icon="ion-images"></ons-icon>
+        <div class="peek-item-text">Media Share</div>
       </ons-list-item>
-      <ons-list-item
-        modifier="chevron"
-        ng-click="event_slider.setMainPage('settings', {closeMenu: true})">
-        <ons-icon icon="ion-android-options"></ons-icon>&nbsp;&nbsp;Settings
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
+        <ons-icon icon="ion-card"></ons-icon>
+        <div class="peek-item-text">Pay Split</div>
+      </ons-list-item>
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('settings')" ng-class="{active: nav.topPage.name=='settings'}">
+        <ons-icon icon="ion-android-options"></ons-icon>
+        <div class="peek-item-text">Settings</div>
       </ons-list-item>
     </ons-scroller>
+    <ons-list-item ripple class="message-send-button" ng-hide="nav.topPage.name!='chat'" ng-click="chat.sendMessage();chat.newMessage='';">
+        <ons-icon icon="ion-paper-airplane"></ons-icon>
+        <div class="peek-item-text">Send</div>
+    </ons-list-item>
   </ons-list>
-</ons-template>
+  <!-- Event Pages Wrapper -->
+  <ons-navigator id="nav" var="nav" page="chat"></ons-navigator>
+</ons-page>
 <!------------------------->
 <!-- Info List -->
 <!------------------------->
 <ons-template id="info">
-  <ons-page>
-    <ons-toolbar>
-      <div class="left">
-        <ons-toolbar-button ng-click="$location.path('/')">
-          <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-      <div class="center">{{meta.name}}</div>
-      <div class="right">
-        <ons-toolbar-button ng-click="event_slider.toggleMenu();">
-          <ons-icon
-            icon="ion-navicon-round"
-            style="vertical-align: -4px; font-size: 32px;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-    </ons-toolbar>
+  <div class="event-page info-page">
     <h2>info</h2>
     <p>{{meta}}</p>
-  </ons-page>
+  </div>
 </ons-template>
 <!------------------------->
 <!-- Chat Messages List -->
 <!------------------------->
 <ons-template id="chat">
-  <ons-page class="event-chat">
-    <ons-toolbar>
-      <div class="left">
-        <ons-toolbar-button ng-click="$location.path('/')">
-          <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-      <div class="center">{{meta.name}}</div>
-      <div class="right">
-        <ons-toolbar-button ng-click="event_slider.toggleMenu();">
-          <ons-icon
-            icon="ion-navicon-round"
-            style="vertical-align: -4px; font-size: 32px;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-    </ons-toolbar>
-    <!-- <h2>Chat</h2> -->
+  <div class="event-page chat-page">
     <p class="alert alert-danger" ng-show="err">{{err}}</p>
     <ons-list>
       <!-- <ons-scroller style="height: 85vh; width: 100%"> -->
-      <ons-list-item
-        ng-class='getMessageClass(message)'
-        ng-repeat="message in chat.messages"
-        class="animate-enter">
-        <div
-          class="message-username"
-          ng-hide="message.from == myId || message.from=='info'">
+      <ons-list-item ng-class='chat.getMessageClass(message)' ng-repeat="message in chat.messages" class="animate-enter">
+        <div class="message-username" ng-hide="message.from == myId || message.from=='info'">
           {{message.fromUsername}}:
         </div>
         <div class="message-content">{{message.message}}</div>
-        <div class="message-time">
-          {{formatDate(message.time)}}</div>
+        <div class="message-time">&nbsp;{{chat.formatDate(message.time)}}</div>
       </ons-list-item>
       <!-- </ons-scroller> -->
     </ons-list>
     <ons-bottom-toolbar class="chat-bottom-toolbar">
-      <input class="message-input" placeholder="Message..." ng-model="newMessage">
-      <ons-button
-        class="message-send-button"
-        type="submit"
-        ng-click="chat.sendMessage(newMessage);newMessage = null;">
-        <ons-icon icon="ion-paper-airplane"></ons-icon>
-      </ons-button>
+      <input class="message-input" placeholder="Message..." ng-model="chat.newMessage">
     </ons-bottom-toolbar>
-  </ons-page>
+  </div>
 </ons-template>
 <!------------------------->
 <!-- Members List -->
 <!------------------------->
 <ons-template id="members">
-  <ons-page>
-    <ons-toolbar>
-      <div class="left">
-        <ons-toolbar-button ng-click="$location.path('/')">
-          <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-      <div class="center">{{meta.name}}</div>
-      <div class="right">
-        <ons-toolbar-button ng-click="event_slider.toggleMenu();">
-          <ons-icon
-            icon="ion-navicon-round"
-            style="vertical-align: -4px; font-size: 32px;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-    </ons-toolbar>
+  <div class="event-page members-page">
     <ons-list>
-      <h2>members</h2>
-      <ons-list-item
-        ng-repeat="(id,member) in meta.members"
-        ng-click="openProfile(id);"
-        class="list-item-container">
+      <ons-list-item ng-repeat="member in members.list" ng-click="openProfile(id);" class="list-item-container">
         <div class="left">
-          <img src="images/yeoman.png" class="avator">
+          <img ng-src="{{member.photoURL}}" class="thumbnail">
         </div>
         <div class="center">
           <div class="list-item-content">
-            <div class="name">{{member}}
+            <div class="name">{{meta.members[member.$id].role}}: {{member.username}}
             </div>
-            <span class="desc">{{id}}</span>
+            <span class="desc">{{member.$id}}</span>
           </div>
         </div>
       </ons-list-item>
-      <div ng-show="isShowInvited()" class="ng-hide">
-        <ons-list-header >
+      <div ng-show="members.invited.length > 0" class="ng-hide">
+        <ons-list-header>
           Invited
         </ons-list-header>
-        <ons-list-item
-          ng-repeat="(id,member) in invited"
-          ng-click="openProfile(id);"
-          class="list-item-container">
+        <ons-list-item ng-repeat="(id,member) in members.invited" ng-click="openProfile(id);" class="list-item-container">
           <div class="left">
-            <img src="images/yeoman.png" class="avator">
+            <img src="images/yeoman.png" class="thumbnail">
           </div>
           <div class="center">
             <div class="list-item-content">
-              <div class="name">{{member}}
+              <div class="name">{{member.role}}: {{member.username}}
               </div>
               <span class="desc">{{id}}</span>
             </div>
@@ -195,11 +132,11 @@
       +
     </ons-button>
     <!-- </ons-if> -->
-  </ons-page>
-  <ons-dialog var="dialog" cancelable style="height: 80vh; width: 80vw;">
+  </div>
+  <ons-dialog var="dialog" cancelable style="height: 80vh; width: 90vw;">
     <ons-toolbar>
       <div class="center">
-        <input type="text" placeholder="Filter" id="query" ng-model="query"/>
+        <input type="text" placeholder="Filter" id="query" ng-model="query" />
       </div>
       <div class="right">
         <ons-toolbar-button ng-click="dialog.hide()">
@@ -209,9 +146,7 @@
     </ons-toolbar>
     <ons-list style="margin-top:56px;">
       <!-- <on-scrollable style="height:80vh;"> -->
-      <ons-list-item
-        ng-repeat="(id,username) in friends.list | friendsFilter:query"
-        modifier="tappable">
+      <ons-list-item ng-repeat="(id,username) in members.friends | friendsFilter:query" modifier="tappable">
         <label class="list__item__left">
           <label class="checkbox checkbox--list-item">
             <input
@@ -226,33 +161,16 @@
       </ons-list-item>
       <!-- </on-scrollable> -->
     </ons-list>
-    <ons-button
-      style="bottom: 0px;position: absolute;width: 100%;font-size: 1.5em;padding: 5px;"
-      ng-click="sendInvite()">Invite</ons-button>
+    <ons-button style="bottom: 0px;position: absolute;width: 100%;font-size: 1.5em;padding: 5px;" ng-click="members.sendInvite()">Invite</ons-button>
   </ons-dialog>
 </ons-template>
 <!------------------------->
 <!-- Event Settings List -->
 <!------------------------->
 <ons-template id="settings">
-  <ons-page>
-    <ons-toolbar>
-      <div class="left">
-        <ons-toolbar-button ng-click="$location.path('/')">
-          <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-      <div class="center">{{meta.name}}</div>
-      <div class="right">
-        <ons-toolbar-button ng-click="event_slider.toggleMenu();">
-          <ons-icon
-            icon="ion-navicon-round"
-            style="vertical-align: -4px; font-size: 32px;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-    </ons-toolbar>
+  <div class="event-page settings-page">
     <h2>settings</h2>
-  </ons-page>
+  </div>
 </ons-template>
 
 <!------------------------->
@@ -260,45 +178,17 @@
 <!------------------------->
 
 <ons-template id="map">
-  <ons-page ng-init="loadMap()">
-    <ons-toolbar>
-      <div class="left">
-        <ons-toolbar-button ng-click="$location.path('/')">
-          <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-      <div class="center">{{meta.name}}</div>
-      <div class="right">
-        <ons-toolbar-button ng-click="event_slider.toggleMenu();">
-          <ons-icon
-            icon="ion-navicon-round"
-            style="vertical-align: -4px; font-size: 32px;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-    </ons-toolbar>
-    <div style="width: 100%; height: 100%" id="mapContainer"></div>
-  </ons-page>
+  <div class="event-page map-page">
+    <ons-page ng-init="loadMap()">
+      <div style="width: 100%; height: 100%" id="mapContainer"></div>
+    </ons-page>
+  </div>
 </ons-template>
 <!------------------------->
 <!-- Placholder  - Coming soon-->
 <!------------------------->
 <ons-template id="placeholder">
-  <ons-page>
-    <ons-toolbar>
-      <div class="left">
-        <ons-toolbar-button ng-click="$location.path('/')">
-          <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-      <div class="center">{{meta.name}}</div>
-      <div class="right">
-        <ons-toolbar-button ng-click="event_slider.toggleMenu();">
-          <ons-icon
-            icon="ion-navicon-round"
-            style="vertical-align: -4px; font-size: 32px;"></ons-icon>
-        </ons-toolbar-button>
-      </div>
-    </ons-toolbar>
+  <div class="event-page placeholder-page">
     <h2>Coming Soon</h2>
-  </ons-page>
+  </div>
 </ons-template>

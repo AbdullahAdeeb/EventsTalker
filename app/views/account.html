@@ -41,8 +41,8 @@
         </ons-col>
       </ons-row>
     </ons-list-item>
-    
-   
+
+
     <p> Update Email </p>
     <ons-list-item>
         <div style="text-align: center;">
@@ -71,21 +71,21 @@
 
           <button ng-click="changeEmail(pass, newEmail)">update email</button>
         </form>-->
-      
+
     </ons-list-item>
-    
+
     <p> Update Password </p>
     <ons-list-item>
-      
+
           <div class ="c" style="text-align: center;">
     <p>
       <ons-input id="username" modifier="underbar" placeholder="Old Password" ng-model= "oldpass" float></ons-input>
     </p>
-            
+
     <p>
       <ons-input id="password" modifier="underbar" type="password" placeholder="New Password" ng-model = "newpass" float></ons-input>
     </p>
-            
+
     <p>
       <ons-input id="password" modifier="underbar" type="password" placeholder="Confirm New Password"  ng-model = "confirm" float></ons-input>
     </p>
@@ -93,9 +93,9 @@
       <ons-button ng-click="changePassword(oldpass, newpass, confirm)">Update</ons-button>
     </p>
   </div>
-      
-      
-      
+
+
+
       <!--- <div>
         <form role="form">
           <h3>Change Password</h3>
@@ -130,5 +130,5 @@
   </ons-list>
 
   <br>
-  <div ng-repeat="message in messages" class="alert alert-{{message.type}}">{{message.text}}</div>
+  <div ng-repeat="alert in alerts" class="alert alert-{{message.type}}">{{alert.text}}</div>
 </ons-page>

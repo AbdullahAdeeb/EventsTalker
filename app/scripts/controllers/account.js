@@ -7,10 +7,10 @@
  * Provides rudimentary account management functions.
  */
 angular.module('onTimeApp')
-  .controller('AccountCtrl', function($scope, Account, Auth, FireRef, $firebaseObject, $timeout, $location) {
+  .controller('AccountCtrl', function($scope, Account, Auth, $firebaseObject, $timeout, $location) {
     // $scope.user = user;
     $scope.$location = $location;
-    $scope.messages = [];
+    $scope.alerts = [];
     // var profile = $firebaseObject(FireRef.child('users/' + user.uid));
     // profile.$bindTo($scope, 'profile');
     $scope.account = Account;
@@ -72,14 +72,15 @@ angular.module('onTimeApp')
       alert(msg, 'success');
     }
 
+
     function alert(msg, type) {
       var obj = {
         text: msg + '',
         type: type
       };
-      $scope.messages.unshift(obj);
+      $scope.alerts.unshift(obj);
       $timeout(function() {
-        $scope.messages.splice($scope.messages.indexOf(obj), 1);
+        $scope.alerts.splice($scope.alerts.indexOf(obj), 1);
       }, 10000);
     }
 

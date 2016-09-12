@@ -5,65 +5,15 @@
 angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $firebaseObject, Auth, $cordovaGeolocation) {
   'use strict';
 
-  var account = {
-    'broadcastLocationCallback': function() {
-      console.error("no broadcastLocationCallback defined")
-    },
-    'location': {
-      'lat': 0,
-      'lng': 0,
-      'accuracy': 0,
-      'speed': 0
-    }
-  };
+  var services = {}; // accessed globaly as Account
 
-  account.$ref = function() {
-    return account.fbo.$ref();
-  };
-  account.getUsername = function() {
-    return account.fbo.username;
-  };
-  account.getId = function() {
-    return Auth.$getAuth().uid;
-  };
-
-
-  // start the GeoLocation watcher and update the Account.location
-  account.startLocationWatching = function() {
-    var watchOptions = {
-      timeout: 3000,
-      enableHighAccuracy: false // may cause errors if true
-    };
-    $cordovaGeolocation.watchPosition(watchOptions).then(
-      null,
-      function(err) {
-        // error
-        alert(err);
-      },
-      function(position) {
-        updateLocation(position);
-      });
-  }
-
-  function updateLocation(position) {
-    account.location.timestamp = position.timestamp;
-    account.location.lat = position.coords.latitude;
-    account.location.lng = position.coords.longitude;
-    account.location.accuracy = position.coords.accuracy;
-    account.location.speed = position.coords.speed;
-
-    account.$ref().child('location').set(account.location);
-    console.debug('location watcher >> ', position, ' || account.location=', account.location);
-
-    account.broadcastLocationCallback(account.location);
-  }
-
-  function loadAccount(authData) {
-    console.info('loading account =', authData);
-    account.fbo = $firebaseObject(UsersRef.child(authData.uid));
-    var myConnectionsRef = account.$ref().child('connections');
+  // this function is only called after auth is true
+  function init(authData) {
+    console.info('loading services =', authData);
+    services.fbo = $firebaseObject(UsersRef.child(authData.uid));
+    var myConnectionsRef = services.$ref().child('connections');
     // stores the timestamp of my last disconnect (the last time I was seen online)
-    var lastOnlineRef = account.$ref().child('lastOnline');
+    var lastOnlineRef = services.$ref().child('lastOnline');
     var connectedRef = FireRef.child('.info/connected');
 
 
@@ -101,7 +51,6 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
         }
       );
 
-
       FCMPlugin.getToken(
         function(token) {
           alert(token);
@@ -111,19 +60,87 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
         }
       )
     }
-    account.startLocationWatching();
+
+    startLocationWatching();
   }
+
+  //////// GEO HANDLING  /////////
+  var locationChangeListeners = [];
+
+  services.addLocationChangeListener = function(callback) {
+    if (typeof callback != 'function') {
+      console.error('Error: non function parameter given to addLocationChangeListener');
+      return;
+    }
+    locationChangeListeners.push(callback);
+  };
+
+  var broadcastLocation = function() {
+    for (var l = 0; l < locationChangeListeners.length; l++) {
+      var f = locationChangeListeners[l];
+      f();
+    }
+  };
+
+  // start the GeoLocation watcher and update the Account.location
+  var startLocationWatching = function() {
+    $cordovaGeolocation.watchPosition({
+      //Watch Options
+      timeout: 3000,
+      enableHighAccuracy: false // may cause errors if true
+    }).then(
+      null,
+      function(err) {
+        // error
+        alert(err);
+      },
+      function(position) {
+        //position changed
+        var location = {
+          'timestamp':position.timestamp,
+          'lat':position.coords.latitude,
+          'lng':position.coords.longitude,
+          'accuracy':position.coords.accuracy,
+          'speed':position.coords.speed
+        }
+
+        services.$ref().child('location').set(location);
+        console.debug('location watcher >> ', position, ' || Account.location=', services.getLocation());
+
+        broadcastLocation(services.location);
+      });
+  }
+
+  //////// END - GEO LOCATION HANDLING //////////////
+
+////// ACCOUNT GETTERS ///////
+  services.$ref = function() {
+    return services.fbo.$ref();
+  };
+
+  services.getUsername = function() {
+    return services.fbo.username;
+  };
+
+  services.getId = function() {
+    return Auth.$getAuth().uid;
+  };
+
+  services.getLocation = function() {
+    return services.fbo.location;
+  }
+  ////////////////////////
 
   var authData = Auth.$getAuth();
   if (authData) {
     //authenticated
-    loadAccount(authData);
+    init(authData);
   } else {
     //not authenticated
     console.log("Logged out");
     Auth.$onAuthStateChanged(function(authData) {
-      loadAccount(authData);
+      init(authData);
     });
   }
-  return account;
+  return services;
 });
