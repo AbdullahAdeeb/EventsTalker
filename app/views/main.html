@@ -124,7 +124,7 @@
       </ons-if>
     </div>
   </ons-toolbar>
-  <ons-list>
+  <!-- <ons-list>
     <ons-list-item ng-repeat="event in events.discover" class="list-item-container" ng-click="openEvent(event.id);">
       <ons-row>
         <ons-col width="95px">
@@ -150,7 +150,15 @@
     <ons-button class="fab" ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');;">
       +
     </ons-button>
-  </ons-if>
+  </ons-if> -->
+  <ons-page>
+  <div class="event-page map-page" style="width: 100%; height: 100%">
+      <div  style="width: 100%; height: 100%" id="map_container"></div>
+      <ons-button class="fab" ng-click="loadMap()">
+        !
+      </ons-button>
+  </div>
+</ons-page>
 </ons-template>
 <!------------------------->
 <!-- Events Invites List -->

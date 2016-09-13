@@ -36,4 +36,4 @@
           <p class="error" ng-show="err">{{err}}</p>
           <p class="good" ng-show="msg">{{msg}}</p>
         </form>
-      </div> --> </ons-list-item> <ons-list-item modifier="chevron"> <ons-button role="button" ng-click="logout()">Log Out</ons-button> </ons-list-item> </ons-list> <br> <div ng-repeat="message in messages" class="alert alert-{{message.type}}">{{message.text}}</div> </ons-page>
+      </div> --> </ons-list-item> <ons-list-item modifier="chevron"> <ons-button role="button" ng-click="logout()">Log Out</ons-button> </ons-list-item> </ons-list> <br> <div ng-repeat="alert in alerts" class="alert alert-{{message.type}}">{{alert.text}}</div> </ons-page>

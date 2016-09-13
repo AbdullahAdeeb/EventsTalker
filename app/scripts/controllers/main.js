@@ -10,28 +10,13 @@
 ////////////////////////////////////////////
 angular.module('onTimeApp')
   .controller('MainCtrl', function(
-    Account,
-    Main,
-    //   Auth,
-    //   user,
-    UsersRef,
-    RoomMetaRef,
-    RoomMsgsRef,
-    RoomUsersRef,
-    $firebaseArray,
-    $firebaseObject,
-    $location,
-    $scope
-  ) {
-    /////// TODO test/ /////
-    window.s = $scope;
-    ////////////////////////
+    Account, Main, UsersRef, RoomMetaRef, RoomMsgsRef, RoomUsersRef, $firebaseArray, $firebaseObject, $location, $scope) {
     $scope.account = Account;
     $scope.$location = $location;
     $scope.events = {
-      list : Main.list, // Async
-      discover : Main.discover,
-      invites : Main.invites
+      list: Main.list, // Async
+      discover: Main.discover,
+      invites: Main.invites
     };
     $scope.createEvent = Main.createEvent;
     $scope.acceptInvite = Main.acceptInvite;
@@ -50,6 +35,18 @@ angular.module('onTimeApp')
       isLiveTracking: true
     };
 
-    angular.module('onTimeApp').controller('EventCtrl', function($scope){});
-
+    /////// TODO test/ /////
+    window.s = $scope;
+    $scope.loadMap = function() {
+        // Obtain the default map types from the platform object
+        var maptypes = platform.createDefaultLayers();
+        // Instantiate (and display) a map object:
+        var map = new H.Map(
+          document.getElementById('map_container'),
+          defaultLayers.normal.map, {
+              center: new H.geo.Point(Account.getLocation().lat, Account.getLocation().lng),
+              zoom: 18
+            });
+      }
+      ////////////////////////
   });

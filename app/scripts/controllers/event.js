@@ -10,9 +10,36 @@ angular.module('onTimeApp')
   .controller('EventCtrl', function($scope, Account, Friends, Event, $location, $routeParams, $timeout, $cordovaGeolocation) {
     $scope.$location = $location;
 
-      // Declaring global variables
+    // Declaring global variables
     var roomId = $routeParams.roomId; //get the id from the url
-    var thisEvent = Event.join(roomId); // get a normal object to collect multiple room firebaseObjects
+    var thisEvent = Event.join(roomId); //returns normal object = firebaseObjects + my objects
+
+    $scope.slider = {
+      togglePeek: function() {
+        var x = $('#peek_slider');
+        console.log(x);
+        // var  = $scope.peek_slider;
+        if (x.hasClass('open')) {
+          //close action
+          x.animate({
+            left: '20em'
+          }, 150).removeClass('open');
+        } else {
+          // open action
+          x.animate({
+            left: '11em'
+          }, 150).addClass('open');
+        }
+      },
+      openPage: function(page) {
+        if (nav.topPage.name != page) {
+          $scope.slider.isPageLoaded = $scope.nav.replacePage(page, {
+            'animation': 'slide'
+          });
+
+        }
+      }
+    };
 
     ///// META TAB /////
     $scope.meta = thisEvent.meta;
@@ -20,7 +47,7 @@ angular.module('onTimeApp')
 
     ///// CHAT TAB ////
     $scope.chat = {
-      newMessage : '',
+      newMessage: '',
       messages: thisEvent.messages,
       sendMessage: function() {
         if (this.newMessage) {
@@ -64,86 +91,70 @@ angular.module('onTimeApp')
     $scope.map = {
       // load the map and configure it
       loadMap: function() {
-        // Obtain the default map types from the platform object
-        var maptypes = platform.createDefaultLayers();
-        //   if (map == undefined) {
-        // Instantiate (and display) a map object:
-        thisEvent.map = new H.Map(
-          document.getElementById('mapContainer'),
-          maptypes.normal.map, {
-            center: new H.geo.Point(Account.location.lat, Account.location.lng),
-            zoom: 18
+          $scope.slider.isPageLoaded.then(function() {
+            console.debug("loading map");
+            // Obtain the default map types from the platform object
+            // Instantiate (and display) a map object:
+            thisEvent.map = new H.Map(
+              document.getElementById('map_container'),
+              defaultLayers.normal.map,
+              {center: new H.geo.Point(Account.getLocation().lat, Account.getLocation().lng),
+                zoom: 18
+              });
+            // MapEvents enables the event system
+            // Behavior implements default interactions for pan/zoom (also on mobile touch environments)
+            var behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(thisEvent.map));
+
+            // Create the default UI components
+            // var ui = H.ui.UI.createDefault(thisEvent.map, defaultLayers);
+            var myElem = document.createElement('div');
+              myElem.appendChild(
+                document.createElement('div')).className = 'pin bounce';
+              myElem.appendChild(
+                document.createElement('div')).className = 'pulse';
+            var myIcon = new H.map.DomIcon(myElem);
+            var myMarker = new H.map.DomMarker({
+              'lng': Account.getLocation().lng,
+              'lat': Account.getLocation().lat
+            }, {
+              icon: myIcon
+            });
+            thisEvent.map.addObject(myMarker);
+
+
+            var range = new H.map.Circle({
+              'lng': Account.getLocation().lng,
+              'lat': Account.getLocation().lat
+            }, Account.getLocation().accuracy)
+            thisEvent.map.addObject(range);
+
+            // Show traffic tiles
+            thisEvent.map.setBaseLayer(defaultLayers.normal.traffic);
+
+            // Enable traffic incidents layer
+            thisEvent.map.addLayer(defaultLayers.incidents);
+
+            // var icon = new H.map.Icon('/images/home_pointer.png');
+
+            // var memIds = Object.keys(thisEvent.meta.members);
+            // for (var m = 0; m < memIds.length; m++) {
+            //   if (memIds[m] == Account.getId() || !thisEvent.meta.members[memIds[m]].location) {
+            //     continue;
+            //   }
+            //
+            //   var myMarker = new H.map.Marker({
+            //     'lng': thisEvent.meta.members[memIds[m]].location.lng,
+            //     'lat': thisEvent.meta.members[memIds[m]].location.lat,
+            //     'data': {
+            //       'uid': memIds[m]
+            //     }
+            //   });
+            //   thisEvent.map.addObject(myMarker);
+            //   thisEvent.map.markers[memIds[m]] = myMarker;
+            // }
           });
-        thisEvent.map.markers = {};
-
-        //   }else{
-        //       alert('map is already loaded');
-        //   }
-        var domIcon = new H.map.DomIcon('<svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" ' +
-          'y="0px" style="margin:-112px 0 0 -32px" width="136px"' +
-          'height="150px" viewBox="0 0 136 150"><ellipse fill="#000" ' +
-          'cx="32" cy="128" rx="36" ry="4"><animate attributeName="cx" ' +
-          'from="32" to="32" begin="0s" dur="1.5s" values="96;32;96" ' +
-          'keySplines=".6 .1 .8 .1; .1 .8 .1 1" keyTimes="0;0.4;1"' +
-          'calcMode="spline" repeatCount="indefinite"/>' +
-          '<animate attributeName="rx" from="36" to="36" begin="0s"' +
-          'dur="1.5s" values="36;10;36" keySplines=".6 .0 .8 .0; .0 .8 .0 1"' +
-          'keyTimes="0;0.4;1" calcMode="spline" repeatCount="indefinite"/>' +
-          '<animate attributeName="opacity" from=".2" to=".2"  begin="0s" ' +
-          ' dur="1.5s" values=".1;.7;.1" keySplines=" .6.0 .8 .0; .0 .8 .0 1" ' +
-          'keyTimes=" 0;0.4;1" calcMode="spline" ' +
-          'repeatCount="indefinite"/></ellipse><ellipse fill="#1b468d" ' +
-          'cx="26" cy="20" rx="16" ry="12"><animate attributeName="cy" ' +
-          'from="20" to="20" begin="0s" dur="1.5s" values="20;112;20" ' +
-          'keySplines=".6 .1 .8 .1; .1 .8 .1 1" keyTimes=" 0;0.4;1" ' +
-          'calcMode="spline" repeatCount="indefinite"/> ' +
-          '<animate attributeName="ry" from="16" to="16" begin="0s" ' +
-          'dur="1.5s" values="16;12;16" keySplines=".6 .0 .8 .0; .0 .8 .0 1" ' +
-          'keyTimes="0;0.4;1" calcMode="spline" ' +
-          'repeatCount="indefinite"/></ellipse></svg>');
-
-
-        //   '<svg version="1.1" id="Layer_12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
-        // 'width="100px" height="100px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve">' +
-        // '<g>' +
-        // '<path d="M70.062,84.747H29.938L9.878,50l20.06-34.747h40.123L90.122,50L70.062,84.747z M31.671,81.747h36.658L86.658,50' +
-        // 'L68.329,18.253H31.671L13.342,50L31.671,81.747z"/>' +
-        // '</g>' +
-        // '</svg>');
-
-        // var icon = new H.map.Icon('/images/home_pointer.png');
-        var myMarker = new H.map.DomMarker({
-          'lng': Account.location.lng,
-          'lat': Account.location.lat
-        }, {
-          icon: domIcon
-        });
-        thisEvent.map.addObject(myMarker);
-
-        var range = new H.map.Circle({
-          'lng': Account.location.lng,
-          'lat': Account.location.lat
-        }, Account.location.accuracy)
-        thisEvent.map.addObject(range);
-        var memIds = Object.keys(thisEvent.meta.members);
-        for (var m = 0; m < memIds.length; m++) {
-          if (memIds[m] == Account.getId() || !thisEvent.meta.members[memIds[m]].location) {
-            continue;
-          }
-
-          var myMarker = new H.map.Marker({
-            'lng': thisEvent.meta.members[memIds[m]].location.lng,
-            'lat': thisEvent.meta.members[memIds[m]].location.lat,
-            'data': {
-              'uid': memIds[m]
-            }
-          });
-          thisEvent.map.addObject(myMarker);
-          thisEvent.map.markers[memIds[m]] = myMarker;
-        }
-      }
-
-    };
+        } // close loadMap()
+    }; // close map{}
     ///-----------------------/////
     ///// POLL TAB ////
     $scope.poll = {
@@ -163,27 +174,7 @@ angular.module('onTimeApp')
     };
     ///-----------------------/////
 
-    $scope.slider = {
-      togglePeek: function() {
-        var x= $('#peek_slider');
-        console.log(x);
-        // var  = $scope.peek_slider;
-        if (x.hasClass('open')) {
-          //close action
-          x.animate({
-            left: '20em'
-          }, 150).removeClass('open');
-        } else {
-          // open action
-          x.animate({
-            left: '11em'
-          }, 150).addClass('open');
-        }
-      },
-      openPage: function(page){
-        $scope.nav.replacePage(page);
-      }
-    };
+
 
     $scope.myId = Account.getId();
     //TODO uncomment the line below

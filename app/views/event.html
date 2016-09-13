@@ -27,7 +27,7 @@
         <ons-icon icon="ion-chatboxes"></ons-icon>
         <div class="peek-item-text">Chat</div>
       </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('map')" ng-class="{active: nav.topPage.name=='map'}">
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('map');" ng-class="{active: nav.topPage.name=='map'}">
         <ons-icon icon="ion-map"></ons-icon>
         <div class="peek-item-text">Map</div>
       </ons-list-item>
@@ -178,10 +178,8 @@
 <!------------------------->
 
 <ons-template id="map">
-  <div class="event-page map-page">
-    <ons-page ng-init="loadMap()">
-      <div style="width: 100%; height: 100%" id="mapContainer"></div>
-    </ons-page>
+  <div class="event-page map-page" style="height: 100%">
+      <div ng-init="map.loadMap();" style="height: 100%" id="map_container"></div>
   </div>
 </ons-template>
 <!------------------------->
@@ -190,5 +188,9 @@
 <ons-template id="placeholder">
   <div class="event-page placeholder-page">
     <h2>Coming Soon</h2>
+  </div>
+  <div id="myPin" class='pin bounce'></div>
+
+  <div class='pulse'></div>
   </div>
 </ons-template>
