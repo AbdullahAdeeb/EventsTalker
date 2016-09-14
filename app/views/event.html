@@ -1,7 +1,7 @@
 <!------------------------->
 <!-- EVENT PAGES HUD -->
 <!------------------------->
-<ons-page>
+<ons-page id="event_page">
   <!-- Event Toolbar -->
   <ons-toolbar>
     <div class="left">
@@ -17,8 +17,8 @@
     </div>
   </ons-toolbar>
   <!-- Event Peek Slider -->
+
   <ons-list id="peek_slider" var="peek_slider">
-    <ons-scroller>
       <ons-list-item modifier="chevron" ng-click="slider.openPage('info');" ng-class="{active: nav.topPage.name=='info'}">
         <ons-icon icon="ion-clipboard"></ons-icon>
         <div class="peek-item-text">Info</div>
@@ -47,11 +47,11 @@
         <ons-icon icon="ion-card"></ons-icon>
         <div class="peek-item-text">Pay Split</div>
       </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('settings')" ng-class="{active: nav.topPage.name=='settings'}">
+      <ons-list-item modifier="chevron" ng-click="slider.openPage('settings')" ng-class="{active: nav.topPage.name=='settings'}" style="margin-bottom:2.65em;">
         <ons-icon icon="ion-android-options"></ons-icon>
         <div class="peek-item-text">Settings</div>
       </ons-list-item>
-    </ons-scroller>
+
     <ons-list-item ripple class="message-send-button" ng-hide="nav.topPage.name!='chat'" ng-click="chat.sendMessage();chat.newMessage='';">
         <ons-icon icon="ion-paper-airplane"></ons-icon>
         <div class="peek-item-text">Send</div>
@@ -64,7 +64,7 @@
 <!-- Info List -->
 <!------------------------->
 <ons-template id="info">
-  <div class="event-page info-page">
+  <div class="event-tab info-tab">
     <h2>info</h2>
     <p>{{meta}}</p>
   </div>
@@ -73,7 +73,7 @@
 <!-- Chat Messages List -->
 <!------------------------->
 <ons-template id="chat">
-  <div class="event-page chat-page">
+  <div class="event-tab chat-tab">
     <p class="alert alert-danger" ng-show="err">{{err}}</p>
     <ons-list>
       <!-- <ons-scroller style="height: 85vh; width: 100%"> -->
@@ -95,7 +95,7 @@
 <!-- Members List -->
 <!------------------------->
 <ons-template id="members">
-  <div class="event-page members-page">
+  <div class="event-tab members-tab">
     <ons-list>
       <ons-list-item ng-repeat="member in members.list" ng-click="openProfile(id);" class="list-item-container">
         <div class="left">
@@ -168,7 +168,7 @@
 <!-- Event Settings List -->
 <!------------------------->
 <ons-template id="settings">
-  <div class="event-page settings-page">
+  <div class="event-tab settings-tab">
     <h2>settings</h2>
   </div>
 </ons-template>
@@ -178,7 +178,7 @@
 <!------------------------->
 
 <ons-template id="map">
-  <div class="event-page map-page" style="height: 100%">
+  <div class="event-tab map-tab" style="height: 100%">
       <div ng-init="map.loadMap();" style="height: 100%" id="map_container"></div>
   </div>
 </ons-template>
@@ -186,7 +186,7 @@
 <!-- Placholder  - Coming soon-->
 <!------------------------->
 <ons-template id="placeholder">
-  <div class="event-page placeholder-page">
+  <div class="event-tab placeholder-tab">
     <h2>Coming Soon</h2>
   </div>
   <div id="myPin" class='pin bounce'></div>
