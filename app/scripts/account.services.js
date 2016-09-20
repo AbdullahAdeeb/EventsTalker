@@ -37,10 +37,10 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
         function(data) {
           if (data.wasTapped) {
             //Notification was received on device tray and tapped by the user.
-            alert(JSON.stringify(data));
+            window.alert(JSON.stringify(data));
           } else {
             //Notification was received in foreground. Maybe the user needs to be notified.
-            alert(JSON.stringify(data));
+            window.alert(JSON.stringify(data));
           }
         },
         function(msg) {
@@ -53,7 +53,7 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
 
       FCMPlugin.getToken(
         function(token) {
-          alert(token);
+          window.alert(token);
         },
         function(err) {
           console.log('error retrieving token: ' + err);
@@ -92,7 +92,7 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
       null,
       function(err) {
         // error
-        alert(err);
+        window.alert(err);
       },
       function(position) {
         //position changed
@@ -102,14 +102,14 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
           'lng':position.coords.longitude,
           'accuracy':position.coords.accuracy,
           'speed':position.coords.speed
-        }
+      };
 
         services.$ref().child('location').set(location);
         console.debug('location watcher >> ', position, ' || Account.location=', services.getLocation());
 
         broadcastLocation(services.location);
       });
-  }
+  };
 
   //////// END - GEO LOCATION HANDLING //////////////
 
@@ -128,7 +128,7 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
 
   services.getLocation = function() {
     return services.fbo.location;
-  }
+};
   ////////////////////////
 
   var authData = Auth.$getAuth();

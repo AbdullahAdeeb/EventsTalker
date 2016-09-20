@@ -75,19 +75,20 @@
 <ons-template id="chat">
   <div class="event-tab chat-tab">
     <p class="alert alert-danger" ng-show="err">{{err}}</p>
-    <ons-list>
+    <ons-list id="smsBody">
       <!-- <ons-scroller style="height: 85vh; width: 100%"> -->
-      <ons-list-item ng-class='chat.getMessageClass(message)' ng-repeat="message in chat.messages" class="animate-enter">
+      <ons-list-item ng-class='chat.getMessageClass(message)' ng-repeat="message in chat.messages" scroll-to-last>
         <div class="message-username" ng-hide="message.from == myId || message.from=='info'">
           {{message.fromUsername}}:
         </div>
         <div class="message-content">{{message.message}}</div>
         <div class="message-time">&nbsp;{{chat.formatDate(message.time)}}</div>
       </ons-list-item>
+      <div id="chat_bottom_anchor"></div>  <!--- Anchor for directive to autoscroll to bottom -->
       <!-- </ons-scroller> -->
     </ons-list>
     <ons-bottom-toolbar class="chat-bottom-toolbar">
-      <input class="message-input" placeholder="Message..." ng-model="chat.newMessage">
+      <input class="message-input" placeholder="Message..." ng-model="chat.newMessage" var="chat-message-input">
     </ons-bottom-toolbar>
   </div>
 </ons-template>
@@ -97,21 +98,24 @@
 <ons-template id="members">
   <div class="event-tab members-tab">
     <ons-list>
-      <ons-list-item ng-repeat="member in members.list" ng-click="openProfile(id);" class="list-item-container">
+      <ons-list-header>
+        Joined {{members.joined.length}}
+      </ons-list-header>
+      <ons-list-item ng-repeat="profile in members.joined" ng-click="openProfile(profile.$id);" class="list-item-container">
         <div class="left">
-          <img ng-src="{{member.photoURL}}" class="thumbnail">
+          <img ng-src="{{profile.photoURL}}" class="thumbnail">
         </div>
         <div class="center">
           <div class="list-item-content">
-            <div class="name">{{meta.members[member.$id].role}}: {{member.username}}
+            <div class="name">{{meta.members[profile.$id].role}}: {{member.username}}
             </div>
-            <span class="desc">{{member.$id}}</span>
+            <span class="desc">{{profile.$id}}</span>
           </div>
         </div>
       </ons-list-item>
-      <div ng-show="members.invited.length > 0" class="ng-hide">
+      <div ng-hide="members.invited.length == 0">
         <ons-list-header>
-          Invited
+          Invited {{members.invited.length}}
         </ons-list-header>
         <ons-list-item ng-repeat="(id,member) in members.invited" ng-click="openProfile(id);" class="list-item-container">
           <div class="left">
@@ -123,6 +127,26 @@
               </div>
               <span class="desc">{{id}}</span>
             </div>
+          </div>
+        </ons-list-item>
+      </div>
+      <div ng-hide="members.ditchers.length == 0">
+        <ons-list-header>
+          Ditchers {{members.ditchers.length}}
+        </ons-list-header>
+        <ons-list-item ng-repeat="(id,member) in members.ditchers" ng-click="openProfile(id);" class="list-item-container">
+          <div class="left">
+            <img src="images/yeoman.png" class="thumbnail">
+          </div>
+          <div class="center">
+            <div class="list-item-content">
+              <div class="name">{{member.role}}: {{member.username}}
+              </div>
+              <span class="desc">{{id}}</span>
+            </div>
+          </div>
+          <div class="right">
+<ons-button ng-click="members.sendInvite(meta,member)">Nag</ons-button>
           </div>
         </ons-list-item>
       </div>
@@ -161,7 +185,7 @@
       </ons-list-item>
       <!-- </on-scrollable> -->
     </ons-list>
-    <ons-button style="bottom: 0px;position: absolute;width: 100%;font-size: 1.5em;padding: 5px;" ng-click="members.sendInvite()">Invite</ons-button>
+    <ons-button style="bottom: 0px;position: absolute;width: 100%;font-size: 1.5em;padding: 5px;" ng-click="members.sendBulkInvites()">Invite</ons-button>
   </ons-dialog>
 </ons-template>
 <!------------------------->
@@ -179,7 +203,8 @@
 
 <ons-template id="map">
   <div class="event-tab map-tab" style="height: 100%">
-      <div ng-init="map.loadMap();" style="height: 100%" id="map_container"></div>
+      <!-- <div ng-init="map.loadMap();" style="height: 100%" id="map_container"></div> -->
+      <here-map></here-map>
   </div>
 </ons-template>
 <!------------------------->

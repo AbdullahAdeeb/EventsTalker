@@ -4,18 +4,29 @@
 angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef', '$firebaseArray', '$firebaseObject', 'RoomMetaRef', 'RoomMsgsRef', 'UsersRef', 'Account', 'Friends',
   function($location, Firebase, FireRef, $firebaseArray, $firebaseObject, RoomMetaRef, RoomMsgsRef, UsersRef, Account, Friends) {
     'use strict';
+    var createUserRoomObj = function(name) {
+      return {
+        'joinedAt': firebase.database.ServerValue.TIMESTAMP,
+        'roomName': name
+      };
+    };
+
+    var createRoomMemberObj = function(username, role) {
+      return {
+        role: role || 'mooch',
+        username: username
+      };
+  };
 
     var mainServices = {};
-    mainServices.list = UsersRef.rooms;
-    mainServices.eventMeta = {};
-    mainServices.eventMessages = {};
+
     mainServices.createEvent = function(newEvent, callback) {
 
       var newRoomKey = RoomMetaRef.push().key;
 
       console.debug(newEvent);
 
-      var hostMmbr = {}
+      var hostMmbr = {};
       hostMmbr[Account.getId()] = {
         username: Account.getUsername(),
         role: 'Host'
@@ -45,14 +56,10 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
         'message': 'Event created by ' + Account.getUsername()
       };
 
-      var userNewRoom = {
-        'joinedAt': firebase.database.ServerValue.TIMESTAMP,
-        'roomName': newRoomMeta.name
-      };
       var updates = {};
-      updates['/'+RoomMetaRef.key+'/' + newRoomKey] = newRoomMeta;
-      updates['/'+RoomMsgsRef.key+'/' + newRoomKey] = [newRoomMessage];
-      updates['/'+UsersRef.key+'/' + Account.getId() + '/rooms/' + newRoomKey] = userNewRoom;
+      updates['/' + RoomMetaRef.key + '/' + newRoomKey] = newRoomMeta;
+      updates['/' + RoomMsgsRef.key + '/' + newRoomKey] = [newRoomMessage];
+      updates['/' + UsersRef.key + '/' + Account.getId() + '/rooms/' + newRoomKey] = createUserRoomObj(newRoomMeta.name);
       FireRef.update(updates, function(error) {
         if (error) {
           console.error(error);
@@ -95,7 +102,7 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
     //       console.debug(' event is not value or e.map doesnt exist');
     //       return;
     //     }
-    //     console.debug("event watch fired >>", e);
+    //     console.debug('event watch fired >>', e);
     //     var memIds = Object.keys(e.meta.members);
     //     for (var m = 0; m < memIds.length; m++) {
     //       if (memIds[m] == Account.getId()) {
@@ -122,98 +129,79 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
 
     mainServices.acceptInvite = function(invite) {
       console.log('acceptInvite >> ', invite);
-      // add user to room-meta.members
-      RoomMetaRef.child(invite.roomId).child('members').child(Account.getId()).set({
-        role: invite.userRole || 'mooch',
-        username: Account.getUsername()
-      }, function(error) {
+      //add use to room-members + add room to user rooms + remove invite from room + remove invite from user
+      var updates = {};
+      updates[Account.$ref().path.toString() + '/rooms/' + invite.roomId] = createUserRoomObj(invite.roomName);
+      //TODO add invite.userRole by allowing the invitor/room admin to pick a role
+      updates['/' + RoomMetaRef.key + '/' + invite.roomId + '/members/' + Account.getId()] = createRoomMemberObj(Account.getUsername(), invite.userRole);
+      updates[Account.$ref().path.toString() + '/invites/' + invite.roomId] = {};
+      FireRef.update(updates, function(error) {
         if (error) {
           console.error(error);
           window.alert('Error removing the invite');
+          return;
         }
-        //add room-id to users.rooms
-        Account.$ref().child('rooms/' + invite.roomId).set({
-            'joinedAt': firebase.database.ServerValue.TIMESTAMP,
-            'roomName': invite.roomName
-          },
-          function(error) {
-            if (error) {
-              console.error(error);
-              window.alert('Error removing the invite');
-            }
-            // remove the room from the invites
-            // Account.$ref().child('invites/' + invite.$id).remove(function(error) {
-            //   if (error) {
-            //     console.error(error);
-            //     window.alert('Error removing the invite from user');
-            //   }
-            // });
-            removeInvite(invite);
-          });
+        //TODO send a message to the event saying the user has joined
       });
+
+
     };
+
     mainServices.rejectInvite = function(invite) {
-      removeInvite(invite);
-    };
-
-
-
-    Account.addLocationChangeListener(function(){
-
-       // for (var e = 0; e < mainServices.list.length; e++) {
-       //   console.debug('broadcasting location to ', mainServices.list[e], ' location =', position);
-       //   mainServices.list[e].meta.$ref().child('members').child(Account.getId()).child('location').set(position, function(error) {
-       //     if (error) {
-       //       console.log('Error:', error);
-       //       return;
-       //     }
-       //     console.info('location broadcasted to event =', mainServices.list[e], position);
-       //
-       //   });
-       //   // mainServices.list[e].meta.$save().then(function(ref) {
-       //   //   ref.key === obj.$id; // true
-       //   // }, function(error) {
-       //   // });
-       // }
-    });
-    function removeInvite(invite) {
-      //remove user-id from the room-meta/invited
-      console.debug('removing the invite from user', invite);
-      RoomMetaRef.child(invite.roomId + '/members/' + invite.toUserId).remove(function(error) {
+      var updates = {};
+      //TODO add invite.userRole by allowing the invitor/room admin to pick a role
+      updates['/' + RoomMetaRef.key + '/' + invite.roomId + '/members/' + Account.getId()] = createRoomMemberObj(Account.getUsername(), 'ditcher');
+      updates[Account.$ref().path.toString() + '/invites/' + invite.roomId] = {};
+      FireRef.update(updates, function(error) {
         if (error) {
           console.error(error);
-          window.alert('Error removing the invite from room');
-        } else {
-          console.debug('removing the invite from user', invite);
-          //remove room-id from users
-          Account.$ref().child('invites/' + invite.$id).remove(function(error) {
-        if (error) {
-              console.error(error);
-              window.alert('Error removing the invite from user');
-            }
-          });
+          window.alert('Error removing the invite');
+          return;
         }
       });
-    }
+    };
 
-    // function getIndex(id) {
-    //   for (var l = 0; l < mainServices.list.length; l++) {
-    //     if (mainServices.list[l].meta.$id === id) {
-    //       return l;
-    //     }
-    //   }
-    //   return -1;
+
+
+    // Account.addLocationChangeListener(function() {
+
+      // for (var e = 0; e < mainServices.list.length; e++) {
+      //   console.debug('broadcasting location to ', mainServices.list[e], ' location =', position);
+      //   mainServices.list[e].meta.$ref().child('members').child(Account.getId()).child('location').set(position, function(error) {
+      //     if (error) {
+      //       console.log('Error:', error);
+      //       return;
+      //     }
+      //     console.info('location broadcasted to event =', mainServices.list[e], position);
+      //
+      //   });
+      //   // mainServices.list[e].meta.$save().then(function(ref) {
+      //   //   ref.key === obj.$id; // true
+      //   // }, function(error) {
+      //   // });
+      // }
+    // });
+
+
+    // function getEvent(id) {
+    //   return mainServices.list[getIndex(id)];
     // }
 
-    function getEvent(id) {
-      return mainServices.list[getIndex(id)];
-    }
+
+    //load mainServices.invites
+    mainServices.invites = $firebaseArray(UsersRef.child(Account.getId()).child('invites'));
+
+    //load mainServices.discover
+    mainServices.discover = $firebaseArray(RoomMetaRef.orderByChild('type').equalTo('public'));
 
     //load mainServices.list
-    mainServices.list = $firebaseArray(UsersRef.child(Account.getId()).child('rooms'));
+    mainServices.list = $firebaseArray(Account.$ref().child('rooms'));
     mainServices.list.$loaded().then(function() {
+      mainServices.eventMeta = {};
+      mainServices.eventMessages = {};
+
       for (var i = 0; i < mainServices.list.length; i++) {
-        console.debug(mainServices.list[i]);
+        console.debug('loading rooms list',mainServices.list[i]);
         var id = mainServices.list[i].$id;
         mainServices.eventMeta[id] = $firebaseObject(RoomMetaRef.child(id));
         mainServices.eventMessages[id] = $firebaseObject(RoomMetaRef.child(id));
@@ -232,11 +220,6 @@ angular.module('onTimeApp').factory('Main', ['$location', 'Firebase', 'FireRef',
     //   }
     // });
 
-    //load mainServices.invites
-    mainServices.invites = $firebaseArray(UsersRef.child(Account.getId()).child('invites'));
-
-    //load mainServices.discover
-    mainServices.discover = $firebaseArray(RoomMetaRef.orderByChild('type').equalTo('public'));
 
     return mainServices;
   }

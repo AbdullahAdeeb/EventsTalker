@@ -5,10 +5,10 @@ angular.module('firebase.config', ['firebase'])
     function() {
       'use strict';
       var config = {
-        apiKey: "AIzaSyBAEeeDn1SRqDCe7-4RR3aMnTbyCJnrbbU",
-        authDomain: "eventstalker-c4fbc.firebaseapp.com",
-        databaseURL: "https://eventstalker-c4fbc.firebaseio.com",
-        storageBucket: "eventstalker-c4fbc.appspot.com",
+        apiKey: 'AIzaSyBAEeeDn1SRqDCe7-4RR3aMnTbyCJnrbbU',
+        authDomain: 'eventstalker-c4fbc.firebaseapp.com',
+        databaseURL: 'https://eventstalker-c4fbc.firebaseio.com',
+        storageBucket: 'eventstalker-c4fbc.appspot.com',
       };
       firebase.initializeApp(config);
     });

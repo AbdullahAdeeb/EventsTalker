@@ -22,10 +22,10 @@ angular.module('onTimeApp').factory('Friends', ['UsersRef', 'Account', 'RoomMeta
 
     //////public functions
     friends.search = function(type, query) {
-      if (type == 'username' || type == 'email') {
+      if (type === 'username' || type === 'email') {
         return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + 'z'));
 
-      } else if (type == 'phone') {
+      } else if (type === 'phone') {
         return $firebaseArray(UsersRef.orderByChild(type).startAt(query).endAt(query + '9'));
 
       }
@@ -62,14 +62,12 @@ angular.module('onTimeApp').factory('Friends', ['UsersRef', 'Account', 'RoomMeta
     };
 
     friends.ignoreFriendRequest = function(reqId, request) {
-      var temp = request;
       friends.requests.received[reqId] = null;
       friends.requests.$save();
       UsersRef.child(reqId).child('requests').child('sent').child(Account.getId()).remove();
     };
 
     friends.cancelFriendRequest = function(reqId, request) {
-      var temp = request;
       friends.requests.sent[reqId] = null;
       friends.requests.$save();
       UsersRef.child(reqId).child('requests').child('received').child(Account.getId()).remove();

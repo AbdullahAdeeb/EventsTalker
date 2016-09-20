@@ -5,22 +5,22 @@
 <ons-template id="main_slider">
   <ons-list>
     <div class="profile-card">
-      <img src="images/profile-image-01.jpg" class="profile-image" ng-click="$location.path('/account')">
+      <img src="images/profile-image-01.jpg" class="profile-image" ng-click="$location.path('/account').replace();">
       <div class="profile-name">{{account.getUsername()}}</div>
-      <ons-button modifier="quiet" ng-click="$location.path('/account')">
+      <ons-button modifier="quiet" ng-click="$location.path('/account').replace();">
         <i class="fa fa-pencil fa-fw"></i>&nbsp; Edit Account
       </ons-button>
       <div class="profile-id">{{account.getId()}}</div>
       <div class="profile-id">{{account.fbo.phone}}</div>
       <div class="profile-desc">{{account.fbo.email}}</div>
     </div>
-    <ons-list-item modifier="chevron" ng-click="$location.path('/');">
+    <ons-list-item modifier="chevron" ng-click="$location.path('/').replace();">
       Home
     </ons-list-item>
-    <ons-list-item modifier="chevron" ng-click="$location.path('/friends');">
+    <ons-list-item modifier="chevron" ng-click="$location.path('/friends').replace();">
       Friends
     </ons-list-item>
-    <ons-list-item modifier="chevron" ng-click="$location.path('/settings');">
+    <ons-list-item modifier="chevron" ng-click="$location.path('/settings').replace();">
       Settings
     </ons-list-item>
   </ons-list>

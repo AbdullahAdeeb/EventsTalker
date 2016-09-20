@@ -41,10 +41,10 @@ angular.module('onTimeApp')
         // Obtain the default map types from the platform object
         var maptypes = platform.createDefaultLayers();
         // Instantiate (and display) a map object:
-        var map = new H.Map(
+        var map = new window.H.Map(
           document.getElementById('map_container'),
           defaultLayers.normal.map, {
-              center: new H.geo.Point(Account.getLocation().lat, Account.getLocation().lng),
+              center: new window.H.geo.Point(Account.getLocation().lat, Account.getLocation().lng),
               zoom: 18
             });
       }

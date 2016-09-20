@@ -23,13 +23,13 @@ angular.module('onTimeApp')
     ons.ready(function() {
       ons.createPopover('friends.search.dropdown').then(
         function(popover) {
-          var dropdownButton = document.querySelector("#dropdown-button");
+          var dropdownButton = document.querySelector('#dropdown-button');
           $scope.search.showDropdown = function() {
             popover.show(dropdownButton);
           };
           $scope.search.hideDropdown = function() {
             popover.hide();
-          }
+        };
         });
     });
 
@@ -39,7 +39,7 @@ angular.module('onTimeApp')
         $scope.search.type = type;
         $scope.search.hideDropdown();
         $scope.search.executeQuery();
-      }
+    };
       // Scope function definitions start
     $scope.search.executeQuery = function() {
       $scope.search.results = []; // clear old results
@@ -48,7 +48,7 @@ angular.module('onTimeApp')
       // throw exception if any before searching
       $scope.search.isEmptyQuery = false;
       $scope.search.isShortQuery = false;
-      if (query.length == 0) {
+      if (query.length === 0) {
         $scope.search.isEmptyQuery = true;
         return;
       } else if (query.length < 3) {
@@ -129,8 +129,8 @@ angular.module('onTimeApp')
 
 angular.module('onTimeApp').filter('friendsFilter', function() {
   return function(input, search) {
-    if (!input) return input;
-    if (!search) return input;
+    if (!input){ return input;}
+    if (!search){ return input;}
     var expected = ('' + search).toLowerCase();
     var result = {};
     angular.forEach(input, function(value, key) {
@@ -140,5 +140,5 @@ angular.module('onTimeApp').filter('friendsFilter', function() {
       }
     });
     return result;
-  }
+};
 });
