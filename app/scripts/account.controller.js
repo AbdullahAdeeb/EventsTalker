@@ -35,11 +35,11 @@ angular.module('onTimeApp')
             newPassword: newPass
           })
           .then(function() {
-          console.log('Password changed successfully');
-          //success('Password changed');
-          }).catch(function(error){
-          console.error('Error:',error);
-        });
+            console.log('Password changed successfully');
+            //success('Password changed');
+          }).catch(function(error) {
+            console.error('Error:', error);
+          });
       }
     };
 
@@ -52,19 +52,19 @@ angular.module('onTimeApp')
         })
         .then(function() {
           Account.fbo.email = newEmail;
-          Account.fbo.$save().then(function(){
-          },function(error){
-          console.log('Error',error);
-                         });
+          Account.fbo.$save().then(function() {}, function(error) {
+            console.log('Error', error);
+          });
           console.log('Email changed');
         })
-        .catch(function(error){
-        console.error('Error:',error);
-      });
+        .catch(function(error) {
+          console.error('Error:', error);
+        });
 
     };
 
     function error(err) {
+      console.error(err);
       alert(err, 'danger');
     }
 

@@ -65,20 +65,27 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
   }
 
   //////// GEO HANDLING  /////////
-  var locationChangeListeners = [];
+  var myLocationWatchers = [];
 
-  services.addLocationChangeListener = function(callback) {
+  // @returns a function to remove the watcher when called
+  services.addMyLocationWatcher = function(callback) {
     if (typeof callback != 'function') {
-      console.error('Error: non function parameter given to addLocationChangeListener');
+      console.error('Error: non function parameter given to addMyLocationWatcher');
       return;
     }
-    locationChangeListeners.push(callback);
+    var length = myLocationWatchers.push(callback);
+    return function() {
+        // remove the watcher; hence, unwatch()
+      myLocationWatchers.splice([length - 1], 1);
+    };
   };
 
-  var broadcastLocation = function() {
-    for (var l = 0; l < locationChangeListeners.length; l++) {
-      var f = locationChangeListeners[l];
-      f();
+  var broadcastLocation = function(location) {
+      console.debug('broadcastLocation >> ', location, ' || Account.location=', services.getLocation());
+
+    for (var w = 0; w < myLocationWatchers.length; w++) {
+      var f = myLocationWatchers[w];
+      f(location);
     }
   };
 
@@ -92,28 +99,28 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
       null,
       function(err) {
         // error
+        console.error(err);
         window.alert(err);
       },
       function(position) {
         //position changed
         var location = {
-          'timestamp':position.timestamp,
-          'lat':position.coords.latitude,
-          'lng':position.coords.longitude,
-          'accuracy':position.coords.accuracy,
-          'speed':position.coords.speed
-      };
+          'timestamp': position.timestamp,
+          'lat': position.coords.latitude,
+          'lng': position.coords.longitude,
+          'accuracy': position.coords.accuracy,
+          'speed': position.coords.speed
+        };
 
         services.$ref().child('location').set(location);
-        console.debug('location watcher >> ', position, ' || Account.location=', services.getLocation());
 
-        broadcastLocation(services.location);
+        broadcastLocation(location);
       });
   };
 
   //////// END - GEO LOCATION HANDLING //////////////
 
-////// ACCOUNT GETTERS ///////
+  ////// ACCOUNT GETTERS ///////
   services.$ref = function() {
     return services.fbo.$ref();
   };
@@ -128,7 +135,7 @@ angular.module('onTimeApp').factory('Account', function(FireRef, UsersRef, $fire
 
   services.getLocation = function() {
     return services.fbo.location;
-};
+  };
   ////////////////////////
 
   var authData = Auth.$getAuth();

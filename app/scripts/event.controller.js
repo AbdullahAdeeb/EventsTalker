@@ -88,14 +88,24 @@ angular.module('onTimeApp')
       },
       sendInvite: function(meta, member) {
         Event.sendInvite(meta, member);
-      }
+    },
+    getMember: function(uid){
+        for(var m = 0 ; m < $scope.members.joined.length; m++){
+            if($scope.members.joined[m].$id == uid){
+                return $scope.members.joined[m];
+            }
+        }
+        return undefined;
+    }
     };
     $scope.invites = [];
     ///-----------------------/////
 
     ///// MAP TAB ////
     $scope.map = {
-      markers: {}
+      markers: {},
+      lines:{},
+      poly:{}
     }; // end map{}
     ///-----------------------/////
     ///// POLL TAB ////
