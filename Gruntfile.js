@@ -10,14 +10,13 @@
 module.exports = function(grunt) {
   // Load grunt tasks automatically
   require('load-grunt-tasks')(grunt);
-  grunt.loadNpmTasks('assemble-less');
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
   // Configurable paths for the application
   var appConfig = {
-    app: require('./bower.json').appPath || 'app',
+    app: 'app',
     dist: 'www'
   };
 
@@ -44,9 +43,9 @@ module.exports = function(grunt) {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
-      compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+      stylus: {
+        files: ['<%= yeoman.app %>/styles/*.styl'],
+        tasks: ['stylus:serve', 'autoprefixer:server']
       },
       gruntfile: {
         files: ['Gruntfile.js']
@@ -57,7 +56,7 @@ module.exports = function(grunt) {
         },
         files: [
           '<%= yeoman.app %>/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
+          '.tmp/styles/*.css',
           '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -85,10 +84,10 @@ module.exports = function(grunt) {
                 '/bower_components',
                 connect.static('./bower_components')
               ),
-              connect().use(
-                '/app/styles',
-                connect.static('./app/styles')
-              ),
+            //   connect().use(
+            //     '/app/styles',
+            //     connect.static('./app/styles')
+            //   ),
               connect.static(appConfig.app)
             ];
           }
@@ -164,17 +163,15 @@ module.exports = function(grunt) {
         },
         files: [{
           expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
+          src: '.tmp/styles/*.css',
           dest: '.tmp/styles/'
         }]
       },
       dist: {
         files: [{
           expand: true,
-          cwd: '.tmp/styles/',
-          src: '{,*/}*.css',
-          dest: '.tmp/styles/'
+          src: '.tmp/styles/*.css',
+          dest: '<%= yeoman.dist %>/styles/'
         }]
       }
     },
@@ -204,37 +201,40 @@ module.exports = function(grunt) {
           }
         }
       },
-      compass: {
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        ignorePath: /(\.\.\/){1,2}bower_components\//
-      }
+    // stylus: {
+    //   src: ['<%= yeoman.app %>/styles/{,*/}*.{styl}'],
+    //   ignorePath: /(\.\.\/){1,2}bower_components\//
+    // }
     },
 
     // Compiles Sass to CSS and generates necessary files if requested
-    compass: {
+    stylus: {
       options: {
-        sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '.tmp/styles',
-        generatedImagesDir: '.tmp/images/generated',
-        imagesDir: '<%= yeoman.app %>/images',
-        javascriptsDir: '<%= yeoman.app %>/scripts',
-        fontsDir: '<%= yeoman.app %>/styles/fonts',
-        importPath: './bower_components',
-        httpImagesPath: '/images',
-        httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
-        relativeAssets: false,
-        assetCacheBuster: false,
-        raw: 'Sass::Script::Number.precision = 10\n'
+        paths: ['<%= yeoman.app %>/styles'],
+        //relativeDest: '../out', //path to be joined and resolved with each file dest to get new one.
+        //mostly useful for files specified using wildcards
+        urlfunc: 'data-uri', // use data-uri('test.png') in our code to trigger Data URI embedding
+        // use: [
+          //     function() {
+          //       return testPlugin('yep'); // plugin with options
+          //     },
+        //   require('fluidity') // use stylus plugin at compile time
+        // ],
+        //   import: [ //  @import 'foo', 'bar/moo', etc. into every .styl file
+        // 'foo', //  that is compiled. These might be findable based on values you gave
+        // 'bar/moo' //  to `paths`, or a plugin you added under `use`
+        //   ]
       },
-      dist: {
-        options: {
-          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+      serve: {
+        files: {
+          //   'path/to/result.css': 'path/to/source.styl', // 1:1 compile
+          '.tmp/styles/compiled.css': ['<%= yeoman.app %>/styles/*.styl'] // compile and concat into single file
         }
       },
-      server: {
-        options: {
-          sourcemap: true
+      build: {
+        files: {
+          //   'path/to/result.css': 'path/to/source.styl', // 1:1 compile
+          '<%= yeoman.dist %>/styles/compiled.css': ['<%= yeoman.app %>/styles/*.styl'] // compile and concat into single file
         }
       }
     },
@@ -244,7 +244,7 @@ module.exports = function(grunt) {
       dist: {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
-          '<%= yeoman.dist %>/styles/{,*/}*.css',
+          '<%= yeoman.dist %>/styles/*.css',
           '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/styles/fonts/*'
         ]
@@ -398,6 +398,7 @@ module.exports = function(grunt) {
           dest: '<%= yeoman.dist %>/fonts/'
         }]
       },
+      //TODO copy:styles seems to be not being used anywhere
       styles: {
         expand: true,
         cwd: '<%= yeoman.app %>/styles',
@@ -409,13 +410,14 @@ module.exports = function(grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'compass:server'
+        'stylus:serve'
+
       ],
       test: [
-        'compass'
+        // 'compass'
       ],
       dist: [
-        'compass:dist',
+        'stylus:build',
         'imagemin',
         'svgmin'
       ]
