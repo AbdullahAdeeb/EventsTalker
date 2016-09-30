@@ -43,8 +43,16 @@ angular.module('onTimeApp')
       }
     };
 
-    ///// META TAB /////
-    $scope.meta = thisEvent.meta;
+
+    ///// PLAN TAB /////
+    $scope.isDescriptionEdit = false;
+    $scope.plan = {
+      meta: thisEvent.meta,
+      saveDescription: function() {
+        thisEvent.meta.description = $('#descriptionEditor').html();
+        thisEvent.meta.$save();
+      }
+    };
     ///-----------------------/////
 
     ///// CHAT TAB ////
@@ -88,15 +96,15 @@ angular.module('onTimeApp')
       },
       sendInvite: function(meta, member) {
         Event.sendInvite(meta, member);
-    },
-    getMember: function(uid){
-        for(var m = 0 ; m < $scope.members.joined.length; m++){
-            if($scope.members.joined[m].$id == uid){
-                return $scope.members.joined[m];
-            }
+      },
+      getMember: function(uid) {
+        for (var m = 0; m < $scope.members.joined.length; m++) {
+          if ($scope.members.joined[m].$id == uid) {
+            return $scope.members.joined[m];
+          }
         }
         return undefined;
-    }
+      }
     };
     $scope.invites = [];
     ///-----------------------/////
@@ -104,8 +112,11 @@ angular.module('onTimeApp')
     ///// MAP TAB ////
     $scope.map = {
       markers: {},
-      lines:{},
-      poly:{}
+      lines: {},
+      poly: {},
+      toggleControls: function() {
+        $('#map_controls').toggleClass('open');
+      }
     }; // end map{}
     ///-----------------------/////
     ///// POLL TAB ////
@@ -125,13 +136,6 @@ angular.module('onTimeApp')
 
     };
     ///-----------------------/////
-
-
-
-
-    console.log($scope.event);
-
-
     function alert(msg) {
       $scope.err = msg;
       $timeout(function() {
@@ -139,7 +143,6 @@ angular.module('onTimeApp')
       }, 5000);
     }
 
-    // var chatRef = new Firebase('https://<YOUR-FIREBASE>.firebaseio.com/chat');
     $scope.isShowInvited = function() {
       if (thisEvent.members.invited.length === 0) {
         return false;
@@ -159,8 +162,10 @@ angular.module('onTimeApp')
     $scope.Account = Account;
     $scope.thisEvent = thisEvent; //TODO delete this line for testing
     $scope.testin = 'this is a test message';
-      ////////////////////////
+    $scope.coverPhoto = '/images/calypso-waterpark.jpg';
+    ////////////////////////
   });
+
 angular.module('onTimeApp').directive('scrollToLast', ['$location', '$anchorScroll',
   function($location, $anchorScroll) {
     function linkFn(scope, element, attrs) {
@@ -178,3 +183,42 @@ angular.module('onTimeApp').directive('scrollToLast', ['$location', '$anchorScro
 
   }
 ]);
+
+angular.module('onTimeApp').controller('locationPickerCtrl',
+  function($scope, Account, $timeout) {
+    console.debug('locationPickerController loading');
+    var geocoderService = platform.getGeocodingService();
+    $scope.geocode = function(addr) {
+      // Create the parameters for the geocoding request:
+      var geocodingParams = {
+        searchText: addr
+      };
+
+      // Define a callback function to process the geocoding response:
+      var onResult = function(result) {
+        var locations = result.Response.View[0].Result;
+        console.log(locations);
+        $scope.searchLocationResults = locations;
+      };
+
+      // Get an instance of the geocoding service:
+
+      // Call the geocode method with the geocoding parameters,
+      // the callback and an error callback function (called if a
+      // communication error occurs):
+      geocoderService.geocode(geocodingParams, onResult, function(e) {
+        alert(e);
+      });
+    }
+    $scope.loadMap = function() {
+      var defaultLayers = window.platform.createDefaultLayers();
+      var map = new window.H.Map(
+        //   document.getElementById('map_container'),
+        $('#map_iris')[0],
+        defaultLayers.normal.map, {
+          center: new window.H.geo.Point(Account.getLocation().lat, Account.getLocation().lng),
+          zoom: 18
+        });
+    }
+    window.ss = $scope;
+  });

@@ -1,57 +1,90 @@
-//#map {
+background-honeycomb(){
+    background:
+    radial-gradient(circle farthest-side at 0% 50%,#fb1 23.5%,rgba(240,166,17,0) 0)21px 30px,
+    radial-gradient(circle farthest-side at 0% 50%,#B71 24%,rgba(240,166,17,0) 0)19px 30px,
+    linear-gradient(#fb1 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#fb1 0)0 0,
+    linear-gradient(150deg,#fb1 24%,#B71 0,#B71 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#B71 0,#B71 76%,#fb1 0)0 0,
+    linear-gradient(30deg,#fb1 24%,#B71 0,#B71 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#B71 0,#B71 76%,#fb1 0)0 0,
+    linear-gradient(90deg,#B71 2%,#fb1 0,#fb1 98%,#B71 0%)0 0 #fb1;
+    background-size:40px 60px;
+}
+
+.map-tab {
+    height: 100%;
+    background-honeycomb;
+    #map_controls {
+        transition: all 0.15s ease;
+        position: absolute;
+        bottom: 0px;
+        font-size: 1.9em;
+        width: 100%;
+        background: #333333;
+        z-index: 9;
+        height:0px;
+        &.open{
+          height: 43px!important;
+        }
+        ons-icon {
+            width: 20%;
+            text-align: center;
+            color: #ffffff;
+        }
+  }
+
+
   .pin {
-    width: 30px;
-    height: 30px;
-    border-radius: 50% 50% 50% 0;
-    background: #00cae9;
-    position: absolute;
-    transform: rotate(-45deg);
-    left: 50%;
-    top: 50%;
-    margin: -20px 0 0 -20px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50% 50% 50% 0;
+      background: #00cae9;
+      position: absolute;
+      transform: rotate(-45deg);
+      left: 50%;
+      top: 50%;
+      margin: -40px 0 0 -20px;
   }
 
   .pin:after {
-    content: "";
-    width: 14px;
-    height: 14px;
-    margin: 8px 0 0 8px;
-    background: #e6e6e6;
-    position: absolute;
-    border-radius: 50%;
-  }
+      content: "";
+      width: 14px;
+        height: 14px;
+        margin: 8px 0 0 8px;
+        background: #e6e6e6;
+        position: absolute;
+        border-radius: 50%;
+    }
 
   .bounce {
-    animation-name: bounce;
-    animation-fill-mode: both;
-    animation-duration: 1s;
+      animation-name: bounce;
+      animation-fill-mode: both;
+      animation-duration: 1s;
   }
 
   .pulse {
-    background: #d6d4d4;
-    border-radius: 50%;
-    height: 14px;
-    width: 14px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin: 11px 0 0 -12px;
-    transform: rotateX(55deg);
-    z-index: -2;
+      background: #d6d4d4;
+      border-radius: 50%;
+      height: 14px;
+      width: 14px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -10px 0 0 -12px;
+      transform: rotateX(55deg);
+      z-index: -2;
   }
 
   .pulse:after {
-    content: "";
-    border-radius: 50%;
-    height: 40px;
-    width: 40px;
-    position: absolute;
-    margin: -13px 0 0 -13px;
-    animation: pulsate 1s ease-out;
-    animation-iteration-count: infinite;
-    opacity: 0;
-    box-shadow: 0 0 1px 2px #00cae9;
-    animation-delay: 1.1s;
+      content: "";
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
+      position: absolute;
+      margin: -33px 0 0 -13px;
+      animation: pulsate 1s ease-out;
+      animation-iteration-count: infinite;
+      opacity: 0;
+      box-shadow: 0 0 1px 2px #00cae9;
+      animation-delay: 1.1s;
   }
   @keyframes pulsate {
     0% {
@@ -87,4 +120,4 @@
       transform: translateY(0) rotate(-45deg);
     }
   }
-//}
+}

@@ -15,7 +15,6 @@ function($location, Firebase, FireRef, $firebaseArray, $firebaseObject, RoomMeta
     //   return getEvent(roomId);
     // }
     var e = {};
-    e.test = RoomMetaRef.child(roomId);
     e.meta = $firebaseObject(RoomMetaRef.child(roomId));
     e.messages = $firebaseArray(RoomMsgsRef.child(roomId));
     e.membersProfiles = {

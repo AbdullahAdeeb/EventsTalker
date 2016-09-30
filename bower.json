@@ -17,7 +17,7 @@
     "ngCordova": "^0.1.26-alpha",
     "firebase": "^3.2.1",
     "angularfire": "^2.0.1",
-    "onsenui": "2.0.0-rc.16"
+    "onsenui": "^2.0.0"
   },
   "overrides": {
     "onsenui": {

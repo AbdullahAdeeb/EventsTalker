@@ -21,6 +21,7 @@
   <!-- <link rel="stylesheet" href="styles/event-map.css"> -->
   <!-- endbower -->
 </head>
+
 <body>
   <div class="container">
     <!-- <ons-navigator var="nav"> -->
@@ -99,6 +100,9 @@
 
   <script>
     angular.element(document).ready(function() {
+    //   window.alert = ons.notification.alert();
+    //   window.confirm = ons.notification.confirm();
+    //   window.prompt = ons.notification.prompt();
       if (window.cordova) {
         console.log("Running in Cordova, will bootstrap AngularJS once 'deviceready' event fires.");
         document.addEventListener('deviceready', function() {

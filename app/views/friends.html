@@ -27,11 +27,12 @@
       </div>
     </ons-list-item>
   </ons-list>
-  <!-- <ons-if platform="firefox safari chrome ie edge android"> -->
-  <ons-button class="fab" ng-click="main_tabbar.loadPage('friends.search');">
+  <ons-button ons-if-platform="ios" ng-click="main_tabbar.loadPage('friends.search');">
+    find
+  </ons-button>
+  <ons-button ons-if-platform="firefox safari chrome ie edge android" class="fab" ng-click="main_tabbar.loadPage('friends.search');">
     +
   </ons-button>
-  <!-- </ons-if> -->
 </ons-template>
 
 
@@ -154,7 +155,7 @@
         </div>
       </div>
       <p ng-cloak ng-hide="!search.isShortQuery">Too short, need a bit more to go with the search.</p>
-          <ons-progress-circular indeterminate ng-cloak ng-hide="!search.isLoading" style="padding: 47%"></ons-progress-circular>
+      <ons-progress-circular indeterminate ng-cloak ng-hide="!search.isLoading" style="padding: 47%"></ons-progress-circular>
   </ons-page>
 </ons-template>
 

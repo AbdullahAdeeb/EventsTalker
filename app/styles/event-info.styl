@@ -1,0 +1,182 @@
+red = rgb(231,76,60);
+honeycombBackground(){
+    inside = #fb1;
+    border = #B71;
+    background:
+    radial-gradient(circle farthest-side at 0% 50%,inside 23.5%,rgba(240,166,17,0) 0)21px 30px,
+    radial-gradient(circle farthest-side at 0% 50%,border 24%,rgba(240,166,17,0) 0)19px 30px,
+    linear-gradient(inside 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,inside 0)0 0,
+    linear-gradient(150deg,inside 24%,border 0,border 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,border 0,border 76%,inside 0)0 0,
+    linear-gradient(30deg,inside 24%,border 0,border 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,border 0,border 76%,inside 0)0 0,
+    linear-gradient(90deg,border 2%,inside 0,inside 98%,border 0%)0 0 inside;
+    background-size:40px 60px;
+}
+
+paperBackground(){
+    background-color: #fff;
+    background:
+        linear-gradient(90deg,transparent 9px,#abced4 9px,#abced4 11px,transparent 11px),
+        linear-gradient(#8693c3 .1em, transparent .1em);
+    background-size: 100% 1em;
+}
+
+brightSquaresBackground(){
+    background-color: #404040;
+    background-image: url(/images/bright-squares.png);
+    color: white;
+}
+
+.plan-tab{
+    height: 100%;
+    overflow-y: scroll;
+    background-color: #ecf0f1;
+
+
+    h3{
+        margin : 0;
+        font-size: 1.1em;
+        font-weight: 800;
+    }
+    .cover-photo{
+        width: 100%;
+        height: 30%;
+        img{
+            height: 100%;
+            width: 100%;
+        }
+        .edit-cover{
+            position: absolute;
+            top: 0.75em;
+            right: 2.5em;
+            font-size: 1.5em;
+            border-radius: 2em;
+            border: 2px solid white;
+            padding: 7px;
+            background-color: rgba(111, 110, 110, 0.45);
+            color: #ffffff;
+        }
+    }
+    .banner{
+        height: 3em;
+        width: 100%;
+        .count-down{
+            position: relative;
+            height: 7em;
+            max-width: 7em;
+            min-width: 7em;
+            top: -2em;
+            border: 4px solid white;
+            background-color: rgb(231,76,60);
+            border-radius: 7em;
+            p{
+                padding: 0px;
+            }
+        }
+        .left,.right{
+            text-align: center;
+            font-size: x-large;
+            padding-top: 7px;
+        }
+    }
+    hr{
+        border: 0;
+        margin: 0;
+        height: 1px;
+        background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    }
+    .meta-container{
+        .meta-section{
+            // meta section header
+            ons-row{
+                &:first-child{
+                    margin-top: 20px;
+                }
+                padding: 10px;
+                .right{
+                    text-align: right;
+                    padding-top: 7px;
+                }
+
+            }
+            // meta section body
+            #descriptionEditor {
+                margin: 0px 10px;
+                width: 90%;
+                max-height: 7em;
+                background-color: rgba(0,0,0,0);
+                border-radius: 10px;
+                padding: 0 7px;
+                overflow-y: auto;
+
+                &.editable{
+                    paperBackground();
+                }
+                &.ng-empty{
+                    border: 1px dotted red;
+                    box-shadow: 0px 0px 9px 0px red;
+                }
+                &.expand{
+                    max-height:none;
+                    overflow-y: auto;
+                    padding-bottom: 10px;
+                }
+            }
+            .fader{
+                width: 100%;
+                text-align: center;
+                position: relative;
+                bottom: 25px;
+                display: block;
+                height: 20px;
+                &:before{
+                    content: "";
+                    height: 30px;
+                    background: linear-gradient(to bottom,rgba(0,0,0,0) 0%,rgba(236,240,241,0.62) 55%,#ecf0f1 100%);
+                    display: block;
+                }
+            }
+        }
+    }
+    #location_picker{
+        .dialog{
+                background: none;
+                height: 91vh;
+                width: 84vw;
+                position: absolute;
+                top: 46vh;
+                left: 43vw;
+                margin-right: 4em;
+        }
+        #map_iris{
+                width: 70vw!important;
+                height: 35vh!important;
+                border-radius: 70vh;
+                background-color: grey;
+                margin: 0 auto;
+                canvas{
+                        border-radius: 35vh;
+                }
+        }
+        .search-container{
+            ons-input{
+                width:100%;
+                background-color: white;
+                border: 2px inset red;
+                border-radius: 10px;
+                margin-top: 10px;
+            }
+            ons-list{
+                height: 55vh;
+                width: 98%;
+                ons-list-item{
+                    width: 100%;
+                    word-wrap: normal;
+                    height: auto;
+                    margin: 10px 5px;
+                    border-radius: 10px;
+                    background-color: green;
+                }
+            }
+        }
+    }
+}

@@ -70,11 +70,9 @@
     </div>
     <div class="center">My Events</div>
     <div class="right">
-      <ons-if platform="ios">
-        <ons-toolbar-button ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
+        <ons-toolbar-button ons-if-platform="ios" ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
           New
         </ons-toolbar-button>
-      </ons-if>
     </div>
   </ons-toolbar>
   <ons-list>
@@ -99,11 +97,9 @@
       </ons-row>
     </ons-list-item>
   </ons-list>
-  <ons-if platform="firefox safari chrome ie edge android">
-    <ons-button class="fab" ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
+    <ons-button ons-if-platform="firefox safari chrome ie edge android" class="fab" ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
       +
     </ons-button>
-  </ons-if>
 </ons-template>
 <!------------------------->
 <!-- Discover Events List -->
@@ -117,11 +113,9 @@
     </div>
     <div class="center">Discover</div>
     <div class="right">
-      <ons-if platform="ios">
-        <ons-toolbar-button ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
+        <ons-toolbar-button ons-if-platform="ios" ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
           New
         </ons-toolbar-button>
-      </ons-if>
     </div>
   </ons-toolbar>
   <!-- <ons-list>
@@ -172,11 +166,6 @@
     </div>
     <div class="center">Invites</div>
     <div class="right">
-      <ons-if platform="ios">
-        <ons-toolbar-button ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
-          New
-        </ons-toolbar-button>
-      </ons-if>
     </div>
   </ons-toolbar>
   <ons-list>
@@ -203,11 +192,6 @@
       </ons-row>
     </ons-list-item>
   </ons-list>
-  <ons-if platform="firefox safari chrome ie edge android">
-    <ons-button class="fab" ng-click="main_slider.setSwipeable(false);main_slider.setMainPage('main.create_event');">
-      +
-    </ons-button>
-  </ons-if>
 </ons-template>
 <!------------------------->
 <!-- Create Event -->
@@ -219,11 +203,8 @@
         <ons-back-button ng-click="main_slider.setSwipeable(true);main_slider.setMainPage('events.wrapper');">Back</ons-back-button>
       </div>
       <div class="center">New Event</div>
-
       <div class="right">
-        <ons-if platform="ios">
-          <ons-toolbar-button ng-click="createEvent(newEvent);">Create</ons-toolbar-button>
-        </ons-if>
+          <ons-toolbar-button ons-if-platform="ios" ng-click="createEvent(newEvent);">Create</ons-toolbar-button>
       </div>
     </ons-toolbar>
     <ons-list>
@@ -288,10 +269,8 @@
         </ons-list-item>
       </div>
     </ons-list>
-    <ons-if platform="firefox safari chrome ie edge android">
-      <ons-button style="position:fixed;bottom:0px;padding:10px 0px 15px 0px;font-size:2em;" ng-click="createEvent(newEvent);" modifier="large--cta" class="login-button">
+      <ons-button ons-if-platform="firefox safari chrome ie edge android" style="position:fixed;bottom:0px;padding:10px 0px 15px 0px;font-size:2em;" ng-click="createEvent(newEvent);" modifier="large--cta" class="login-button">
         <ons-ripple></ons-ripple>
         Create</ons-button>
-    </ons-if>
   </ons-page>
 </ons-template>

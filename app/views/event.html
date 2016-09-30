@@ -9,7 +9,7 @@
         <ons-icon icon="ion-ios-arrow-back" style="font-size: 32px; width: 1em;"></ons-icon>
       </ons-toolbar-button>
     </div>
-    <div class="center">{{meta.name}}</div>
+    <div class="center">{{plan.meta.name}}</div>
     <div class="right">
       <ons-toolbar-button ng-click="slider.togglePeek();">
         <ons-icon icon="ion-navicon-round" style="vertical-align: -4px; font-size: 32px;"></ons-icon>
@@ -19,54 +19,125 @@
   <!-- Event Peek Slider -->
 
   <ons-list id="peek_slider" var="peek_slider">
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('info');" ng-class="{active: nav.topPage.name=='info'}">
-        <ons-icon icon="ion-clipboard"></ons-icon>
-        <div class="peek-item-text">Info</div>
-      </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('chat')" ng-class="{active: nav.topPage.name=='chat'}">
-        <ons-icon icon="ion-chatboxes"></ons-icon>
-        <div class="peek-item-text">Chat</div>
-      </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('map');" ng-class="{active: nav.topPage.name=='map'}">
-        <ons-icon icon="ion-map"></ons-icon>
-        <div class="peek-item-text">Map</div>
-      </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('members')" ng-class="{active: nav.topPage.name=='members'}">
-        <ons-icon icon="ion-ios-people"></ons-icon>
-        <div class="peek-item-text">Members</div>
-      </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
-        <ons-icon icon="fa-question-circle"></ons-icon>
-        <div class="peek-item-text">Polls</div>
-      </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
-        <ons-icon icon="ion-images"></ons-icon>
-        <div class="peek-item-text">Media Share</div>
-      </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
-        <ons-icon icon="ion-card"></ons-icon>
-        <div class="peek-item-text">Pay Split</div>
-      </ons-list-item>
-      <ons-list-item modifier="chevron" ng-click="slider.openPage('settings')" ng-class="{active: nav.topPage.name=='settings'}" style="margin-bottom:2.65em;">
-        <ons-icon icon="ion-android-options"></ons-icon>
-        <div class="peek-item-text">Settings</div>
-      </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('plan');" ng-class="{active: nav.topPage.name=='plan'}">
+      <ons-icon icon="ion-clipboard"></ons-icon>
+      <div class="peek-item-text">Plan</div>
+    </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('chat')" ng-class="{active: nav.topPage.name=='chat'}">
+      <ons-icon icon="ion-chatboxes"></ons-icon>
+      <div class="peek-item-text">Chat</div>
+    </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('map');" ng-class="{active: nav.topPage.name=='map'}">
+      <ons-icon icon="ion-map"></ons-icon>
+      <div class="peek-item-text">Map</div>
+    </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('members')" ng-class="{active: nav.topPage.name=='members'}">
+      <ons-icon icon="ion-ios-people"></ons-icon>
+      <div class="peek-item-text">Members</div>
+    </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
+      <ons-icon icon="fa-question-circle"></ons-icon>
+      <div class="peek-item-text">Polls</div>
+    </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
+      <ons-icon icon="ion-images"></ons-icon>
+      <div class="peek-item-text">Media Share</div>
+    </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('placeholder')" ng-class="{active: nav.topPage.name=='placeholder'}">
+      <ons-icon icon="ion-card"></ons-icon>
+      <div class="peek-item-text">Pay Split</div>
+    </ons-list-item>
+    <ons-list-item modifier="chevron" ng-click="slider.openPage('settings')" ng-class="{active: nav.topPage.name=='settings'}" style="margin-bottom:2.65em;">
+      <ons-icon icon="ion-android-options"></ons-icon>
+      <div class="peek-item-text">Settings</div>
+    </ons-list-item>
 
-    <ons-list-item ripple class="message-send-button" ng-hide="nav.topPage.name!='chat'" ng-click="chat.sendMessage();chat.newMessage='';">
-        <ons-icon icon="ion-paper-airplane"></ons-icon>
-        <div class="peek-item-text">Send</div>
+    <ons-list-item ripple class="corner-button" ng-hide="nav.topPage.name!='chat'" ng-click="chat.sendMessage();chat.newMessage='';">
+      <ons-icon icon="ion-paper-airplane"></ons-icon>
+      <div class="peek-item-text">Send</div>
+    </ons-list-item>
+
+    <ons-list-item ripple class="corner-button" ng-hide="nav.topPage.name!='members'" ng-click="dialog.show();">
+      <ons-icon icon="ion-person-add"></ons-icon>
+      <div class="peek-item-text">Add</div>
+    </ons-list-item>
+
+    <ons-list-item ripple class="corner-button" ng-hide="nav.topPage.name!='map'" ng-click="map.toggleControls();">
+      <ons-icon icon="ion-chevron-up"></ons-icon>
+      <div class="peek-item-text">
+        Map Controls
+      </div>
     </ons-list-item>
   </ons-list>
   <!-- Event Pages Wrapper -->
   <ons-navigator id="nav" var="nav" page="chat"></ons-navigator>
 </ons-page>
 <!------------------------->
-<!-- Info List -->
+<!-- Plan List -->
 <!------------------------->
-<ons-template id="info">
-  <div class="event-tab info-tab">
-    <h2>info</h2>
-    <p>{{meta}}</p>
+<ons-template id="plan">
+  <div class="event-tab plan-tab">
+    <div class="cover-photo">
+      <ons-icon icon="ion-edit" class="edit-cover" ng-click="alert('Ability to change cover photo is not yet available');"></ons-icon>
+      <img ng-src="{{coverPhoto}}" />
+    </div>
+    <ons-row class="banner">
+      <ons-col class="left" ng-click="">Going</ons-col>
+      <ons-col class="center count-down">
+        <p></p>
+      </ons-col>
+      <ons-col class="right" ng-click="">Invite</ons-col>
+    </ons-row>
+    <hr>
+    <div class="meta-container">
+      <div class="meta-section meta-description">
+        <ons-row>
+          <ons-col class="left">
+            <h3>Description:</h3>
+          </ons-col>
+          <ons-col class="right">
+            <a ng-hide="isDescriptionEdit" ng-click="isDescriptionEdit = !isDescriptionEdit;$('#descriptionEditor').focus()">Edit <ons-icon icon="ion-edit"></ons-icon></a>
+            <a ng-hide="!isDescriptionEdit" ng-click="plan.saveDescription();isDescriptionEdit = !isDescriptionEdit;">Save <ons-icon icon="fa-floppy-o"></ons-icon></a>
+          </ons-col>
+        </ons-row>
+        <!-- <textarea var="descriptionEdit" ng-readonly="!isDescriptionEdit" ng-model="plan.meta.description" ng-class="{editable: isDescriptionEdit , expand: isDescriptionExpand} " placeholder="You haven't planned this event yet...&#10;What are you waiting for!"></textarea> -->
+        <div id="descriptionEditor" contenteditable="{{isDescriptionEdit}}" ng-class="{editable: isDescriptionEdit , expand: isDescriptionExpand} " ng-bind-html="plan.meta.description" placeholder="You haven't planned this event yet...&#10;What are you waiting for!"></div>
+        <div ng-hide="!plan.meta.description" class="fader" style="width:100%;text-align:center;">
+          <ons-icon style="font-size:1.5em;" ng-hide="isDescriptionExpand" icon="ion-chevron-down" ng-click="isDescriptionExpand = !isDescriptionExpand"></ons-icon>
+          <ons-icon style="font-size:1.5em;" ng-hide="!isDescriptionExpand" icon="ion-chevron-up" ng-click="isDescriptionExpand = !isDescriptionExpand"></ons-icon>
+        </div>
+      </div>
+      <div class="meta-section meta-location">
+        <ons-row>
+          <ons-col class="left">
+            <h3>Location:</h3>
+          </ons-col>
+          <ons-col class="right">
+            <a ng-hide="isLocationEdit" ng-click="isLocationEdit = !isLocationEdit">Edit <ons-icon icon="ion-edit"></ons-icon> </a>
+            <a ng-hide="!isLocationEdit" ng-click="plan.meta.$save();isLocationEdit = !isLocationEdit">Save <ons-icon icon="fa-floppy-o"></ons-icon></a>
+          </ons-col>
+        </ons-row>
+        <p ng-hide="isLocationEdit">{{plan.meta.location}}</p>
+        <ons-input ng-hide="!isLocationEdit" ng-model="plan.meta.location"></ons-input>
+        <ons-button ng-click="locationPicker.show({callback:loadMap});">Add Location</ons-button>
+      </div>
+      <div class="time">
+      </div>
+      <br><br> {{plan.meta}}
+    </div>
+    <ons-dialog ng-controller="locationPickerCtrl" var="locationPicker" id="location_picker" cancelable>
+      <div id="map_iris"></div>
+      <div class="search-container">
+        <ons-input type="text" ng-change="geocode(locationSearchQuery);" ng-model="locationSearchQuery"></ons-input>
+        <ons-list>
+          <!-- <on-scrollable style="height:80vh;"> -->
+          <ons-list-item ng-repeat="location in searchLocationResults" modifier="tappable">
+            {{location.Location.Address}}
+          </ons-list-item>
+          <!-- </on-scrollable> -->
+        </ons-list>
+      </div>
+    </ons-dialog>
   </div>
 </ons-template>
 <!------------------------->
@@ -84,7 +155,8 @@
         <div class="message-content">{{message.message}}</div>
         <div class="message-time">&nbsp;{{chat.formatDate(message.time)}}</div>
       </ons-list-item>
-      <div id="chat_bottom_anchor"></div>  <!--- Anchor for directive to autoscroll to bottom -->
+      <div id="chat_bottom_anchor"></div>
+      <!--- Anchor for directive to autoscroll to bottom -->
       <!-- </ons-scroller> -->
     </ons-list>
     <ons-bottom-toolbar class="chat-bottom-toolbar">
@@ -107,7 +179,7 @@
         </div>
         <div class="center">
           <div class="list-item-content">
-            <div class="name">{{meta.members[profile.$id].role}}: {{profile.username}}
+            <div class="name">{{plan.meta.members[profile.$id].role}}: {{profile.username}}
             </div>
             <span class="desc">{{profile.$id}}</span>
           </div>
@@ -146,16 +218,11 @@
             </div>
           </div>
           <div class="right">
-<ons-button ng-click="members.sendInvite(meta,member)">Nag</ons-button>
+            <ons-button ng-click="members.sendInvite(meta,member)">Nag</ons-button>
           </div>
         </ons-list-item>
       </div>
     </ons-list>
-    <!-- <ons-if platform="firefox safari chrome ie edge android"> -->
-    <ons-button class="fab" ng-click="dialog.show()">
-      +
-    </ons-button>
-    <!-- </ons-if> -->
   </div>
   <ons-dialog var="dialog" cancelable style="height: 80vh; width: 90vw;">
     <ons-toolbar>
@@ -203,8 +270,13 @@
 
 <ons-template id="map">
   <div class="event-tab map-tab" style="height: 100%">
-      <!-- <div ng-init="map.loadMap();" style="height: 100%" id="map_container"></div> -->
-      <here-map></here-map>
+    <here-map></here-map>
+    <div id="map_controls">
+      <ons-icon icon="ion-chevron-up" ng-click="alert('right clicked')"></ons-icon>
+      <ons-icon icon="ion-android-locate" ng-click="centerOnMe();"></ons-icon>
+      <ons-icon icon="ion-android-expand" ng-click="viewAll();"></ons-icon>
+      <ons-icon icon="ion-ios-bell-outline"></ons-icon>
+    </div>
   </div>
 </ons-template>
 <!------------------------->

@@ -11,7 +11,9 @@ html {
     overflow: hidden;
     overflow-wrap: break-word;
   }
-
+  .event-tab {
+    margin-right: 60px;
+  }
   ons-list {
     overflow-y: auto;
     height: 100%;
@@ -28,13 +30,13 @@ html {
     background: rgba(0,0,0,0.8);
 
     ons-icon {
-      font-size: 2.5em;
-      width: 40px;
+        font-size: 2.5em;
+        width: 40px;
     }
 
     .peek-item-text {
-      font-size: 1.25em;
-      margin-left: 15px;
+        font-size: 1.25em;
+        margin-left: 15px;
     }
 
     ons-list-item {
@@ -48,7 +50,7 @@ html {
       border-left: 0.4em #009688 solid;
     }
 
-    .message-send-button {
+    .corner-button {
       position: fixed;
       bottom: 0;
       background-color: #009688;
@@ -59,250 +61,6 @@ html {
         width: 40px;
         margin-left: 5px;
       }
-    }
-  }
-
-  .event-tab {
-    padding-right: 60px;
-  }
-
-  .map-tab {
-    height: 100%;
-  }
-
-  #map_container {
-    height: 100%;
-  }
-  /// ------------------ CHAT TAB ----------------------------///
-  .chat-tab {
-    height: 100%;
-    padding-bottom: 44px;
-    box-sizing: border-box;
-
-    .chat-bottom-toolbar {
-      padding-right: 40px;
-
-      .message-input {
-        height: 100%;
-        width: 100%;
-        border-top: 1px solid black;
-      }
-    }
-    // --------   messages ---------//
-    .clear {
-      clear: both;
-    }
-
-    .sent-msg {
-      float: right;
-
-      .list__item--material__center {
-        padding: 0;
-      }
-
-      .message-content {
-        min-width: 83%;
-        padding: 17px 8%;
-        color: black;
-        background: #caf1fb;
-        -webkit-clip-path: polygon(10% 0%, 100% 0, 93% 25%, 93% 75%, 100% 100%, 10% 100%, 5px 75%, 5px 25%);
-        clip-path: polygon(10% 0%, 100% 0, 93% 25%, 93% 75%, 100% 100%, 10% 100%, 5px 75%, 5px 25%);
-      }
-
-      .message-time {
-        font-size: 15px;
-        position: absolute;
-        z-index: 9;
-        right: 30px;
-        bottom: -8px;
-        padding: 1px 5px 0;
-        background: white;
-        -webkit-clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
-        clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
-        // /* Safari */
-        // -webkit-transform: rotate(-90deg);
-        // // /* Firefox */
-        //    -moz-transform: rotate(-90deg);
-        // // /* IE */
-        //     -ms-transform: rotate(-90deg);
-        // // /* Opera */
-        //      -o-transform: rotate(-90deg);
-        // // /* Internet Explorer */
-        // //
-        // filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-      }
-    }
-
-    .received-msg {
-      float: left;
-
-      .list__item--material__center,
-      .list__item__center {
-        margin-left: 5px;
-        padding: 0;
-      }
-
-      .message-username {
-        position: absolute;
-        z-index: 9;
-        top: -10px;
-        left: 5px;
-        padding: 0 5px;
-        color: white;
-        background: black;
-        -webkit-clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
-        clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
-      }
-
-      .message-content {
-        min-width: 80%;
-        padding: 17px 8% 17px 12%;
-        color: black;
-        background: #e5e5ea;
-        -webkit-clip-path: polygon(5px 0%, 93% 0, 99% 25%, 99% 75%, 93% 100%, 5px 100%, 10% 75%, 10% 25%);
-        clip-path: polygon(5px 0%, 93% 0, 99% 25%, 99% 75%, 93% 100%, 5px 100%, 10% 75%, 10% 25%);
-      }
-
-      .message-time {
-        font-size: 15px;
-        position: absolute;
-        z-index: 9;
-        right: 30px;
-        bottom: -8px;
-        padding: 1px 5px 0;
-        background: darkgray;
-        -webkit-clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
-        clip-path: polygon(15% 0%, 85% 0, 100% 25%, 100% 75%, 85% 100%, 15% 100%, 0% 75%, 0% 25%);
-      }
-    }
-
-    .info-msg {
-      font-weight: bold;
-      font-style: italic;
-      position: relative;
-      float: right;
-      margin-bottom: 15px;
-      margin-top: 10px;
-      text-align: center;
-      color: white;
-      border-right: solid 21px !important;
-      border-radius: 0 !important;
-      background: #009688 !important;
-      box-shadow: -26px 3px 0.5em black !important;
-    }
-  }
-
-  .to-wrapper {
-    line-height: 1;
-    height: 62px;
-    padding: 10px;
-  }
-
-  .to-image {
-    width: 42px;
-    height: 42px;
-    -webkit-border-radius: 4px;
-    border-radius: 4px;
-  }
-
-  .to-name {
-    font-size: 17px;
-    font-weight: 500;
-    margin-bottom: 4px;
-  }
-
-  .to-email {
-    font-size: 14px;
-    opacity: 0.4;
-  }
-
-  .text-input {
-    margin-top: 4px;
-  }
-
-  .textarea {
-    margin-top: 4px;
-  }
-  /// -------------- List animation  ------------//
-  .animate-enter {
-    position: relative;
-    display: block;
-    -webkit-animation: enter 575ms cubic-bezier(.420, .000, .580, 1.000);
-    animation: enter 575ms cubic-bezier(.420, .000, .580, 1.000);
-  }
-  @-webkit-keyframes enter {
-    from {
-      right: -70px;
-      height: 0;
-      opacity: 0;
-    }
-
-    75% {
-      right: 15px;
-    }
-
-    to {
-      right: 0;
-      height: 30px;
-      opacity: 1;
-    }
-  }
-  @keyframes enter {
-    from {
-      right: -70px;
-      height: 0;
-      opacity: 0;
-    }
-
-    75% {
-      right: 15px;
-    }
-
-    to {
-      right: 0;
-      height: 30px;
-      opacity: 1;
-    }
-  }
-
-  .animate-leave {
-    position: relative;
-    display: block;
-    -webkit-animation: leave 575ms cubic-bezier(.420, .000, .580, 1.000);
-    animation: leave 575ms cubic-bezier(.420, .000, .580, 1.000);
-  }
-  @-webkit-keyframes leave {
-    to {
-      right: -70px;
-      height: 0;
-      opacity: 0;
-    }
-
-    25% {
-      right: 15px;
-    }
-
-    from {
-      right: 0;
-      height: 30px;
-      opacity: 1;
-    }
-  }
-  @keyframes leave {
-    to {
-      right: -70px;
-      height: 0;
-      opacity: 0;
-    }
-
-    25% {
-      right: 15px;
-    }
-
-    from {
-      right: 0;
-      height: 30px;
-      opacity: 1;
     }
   }
 }
