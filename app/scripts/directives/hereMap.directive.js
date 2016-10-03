@@ -2,7 +2,7 @@
 angular.module('onTimeApp').component('hereMap', {
   bindings: {
     // Account : '<'
-    testin: '='
+    // testin: '='
   },
   controller: function($scope, $element, $attrs, Account) {
       var self = this;

@@ -1,0 +1,4 @@
+<svg class="add-button" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" version="1.1">
+    <path class="map-button" ng-click="addLocation();" d="M0,100 Q100,100,100,0 L100,100 0,100" stroke="3ce79a" stroke-width="1px" fill="#3ce79a"/>
+    <text x="68" y="97" fill="white" font-size="40" font-family="Verdana">+</text>
+</svg>

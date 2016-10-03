@@ -17,7 +17,6 @@
     </div>
   </ons-toolbar>
   <!-- Event Peek Slider -->
-
   <ons-list id="peek_slider" var="peek_slider">
     <ons-list-item modifier="chevron" ng-click="slider.openPage('plan');" ng-class="{active: nav.topPage.name=='plan'}">
       <ons-icon icon="ion-clipboard"></ons-icon>
@@ -100,7 +99,6 @@
             <a ng-hide="!isDescriptionEdit" ng-click="plan.saveDescription();isDescriptionEdit = !isDescriptionEdit;">Save <ons-icon icon="fa-floppy-o"></ons-icon></a>
           </ons-col>
         </ons-row>
-        <!-- <textarea var="descriptionEdit" ng-readonly="!isDescriptionEdit" ng-model="plan.meta.description" ng-class="{editable: isDescriptionEdit , expand: isDescriptionExpand} " placeholder="You haven't planned this event yet...&#10;What are you waiting for!"></textarea> -->
         <div id="descriptionEditor" contenteditable="{{isDescriptionEdit}}" ng-class="{editable: isDescriptionEdit , expand: isDescriptionExpand} " ng-bind-html="plan.meta.description" placeholder="You haven't planned this event yet...&#10;What are you waiting for!"></div>
         <div ng-hide="!plan.meta.description" class="fader" style="width:100%;text-align:center;">
           <ons-icon style="font-size:1.5em;" ng-hide="isDescriptionExpand" icon="ion-chevron-down" ng-click="isDescriptionExpand = !isDescriptionExpand"></ons-icon>
@@ -113,28 +111,38 @@
             <h3>Location:</h3>
           </ons-col>
           <ons-col class="right">
-            <a ng-hide="isLocationEdit" ng-click="isLocationEdit = !isLocationEdit">Edit <ons-icon icon="ion-edit"></ons-icon> </a>
-            <a ng-hide="!isLocationEdit" ng-click="plan.meta.$save();isLocationEdit = !isLocationEdit">Save <ons-icon icon="fa-floppy-o"></ons-icon></a>
+            <a ng-click="locationPicker.show({'animation':'none'});">Add <ons-icon icon="ion-ios-plus-outline"></ons-icon> </a>
           </ons-col>
         </ons-row>
-        <p ng-hide="isLocationEdit">{{plan.meta.location}}</p>
-        <ons-input ng-hide="!isLocationEdit" ng-model="plan.meta.location"></ons-input>
-        <ons-button ng-click="locationPicker.show({callback:loadMap});">Add Location</ons-button>
+        <ons-list>
+          <ons-list-item ng-repeat="loc in plan.meta.locations">
+            {{loc.address}}
+          </ons-list-item>
+        </ons-list>
       </div>
-      <div class="time">
+      <div class="meta-section meta-time">
       </div>
       <br><br> {{plan.meta}}
     </div>
-    <ons-dialog ng-controller="locationPickerCtrl" var="locationPicker" id="location_picker" cancelable>
-      <div id="map_iris"></div>
+    <ons-dialog ng-controller="locationPickerCtrl" var="locationPicker" id="location_picker" cancelable ons-postshow="loadMap()">
+      <div id="here_map"></div>
+      <img class="map-crosshair" ng-src="images/map-crosshair.svg">
+      <svg class="close-button" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" version="1.1">
+            <path class="map-button" ng-click="closeLocationPicker({animation:'none'});" d="M100,0 Q0,0,0,100 L0,0 100,0"/>
+            <text x="3" y="20" fill="white" font-size="30" font-family="Verdana">x</text>
+        </svg>
+      <svg class="add-button" width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" version="1.1">
+            <path class="map-button" ng-click="addLocation();" d="M0,100 Q100,100,100,0 L100,100 0,100"/>
+            <text x="68" y="97" fill="white" font-size="40" font-family="Verdana">+</text>
+        </svg>
       <div class="search-container">
-        <ons-input type="text" ng-change="geocode(locationSearchQuery);" ng-model="locationSearchQuery"></ons-input>
+        <ons-input type="text" ng-change="searchLocation(locationSearchQuery);" ng-model="locationSearchQuery" placeholder="Location address search..."></ons-input>
         <ons-list>
-          <!-- <on-scrollable style="height:80vh;"> -->
-          <ons-list-item ng-repeat="location in searchLocationResults" modifier="tappable">
-            {{location.Location.Address}}
+          <ons-list-item ng-repeat="result in searchLocationResults" modifier="tappable" ng-click="selectResult(result);">
+            {{result.Location.Address.Label}}
           </ons-list-item>
-          <!-- </on-scrollable> -->
+          <ons-list-item ng-hide="searchLocationResults.length != 0">No Search Result.<br>Start writing the location address in the field above.</ons-list-item>
+
         </ons-list>
       </div>
     </ons-dialog>
