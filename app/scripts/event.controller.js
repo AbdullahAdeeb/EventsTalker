@@ -8,13 +8,25 @@
  */
 angular.module('onTimeApp')
   .controller('EventCtrl', function($scope, Account, Friends, Event, $location, $routeParams, $timeout, $cordovaGeolocation) {
+    // Declaring controller variables
+    var roomId = $routeParams.roomId; //get the id from the url
+    var thisEvent = Event.join(roomId); //returns normal object = firebaseObjects + my objects
+
+    //Declaring scope variables
     $scope.$location = $location;
     $scope.myId = Account.getId();
 
+    thisEvent.meta.$loaded().then(function() {
+      if (thisEvent.meta.members[Account.getId()].role == 'Host') {
+        $scope.mySecurityLevel = 0;
+    }else if(thisEvent.meta.members[Account.getId()].role == 'Admin'){
+        $scope.mySecurityLevel = 1;
+    }else{
+        $scope.mySecurityLevel = 2;
+    }
+    console.info('mySecurityLevel = '+$scope.mySecurityLevel);
+    });
 
-    // Declaring global variables
-    var roomId = $routeParams.roomId; //get the id from the url
-    var thisEvent = Event.join(roomId); //returns normal object = firebaseObjects + my objects
 
     $scope.slider = {
       togglePeek: function() {
@@ -51,6 +63,24 @@ angular.module('onTimeApp')
       saveDescription: function() {
         thisEvent.meta.description = $('#descriptionEditor').html();
         thisEvent.meta.$save();
+      },
+      datetime: (!!thisEvent.meta.datetime? new Date(thisEvent.meta.datetime).toLocaleString():''),
+      saveDatetime: function() {
+        thisEvent.meta.datetime = $scope.plan.datetime.toJSON();
+        thisEvent.meta.$save();
+      },
+      deleteLocation: function(id) {
+        ons.notification.confirm("Are you sure you want to delete this location ?", {
+          callback: function(index) {
+            if (index == 1) {
+              thisEvent.meta.locations[id] = null
+              thisEvent.meta.$save().then(function(ref) {}, function(error) {
+                alert(error)
+              });
+            }
+          }
+        });
+
       }
     };
     ///-----------------------/////

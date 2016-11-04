@@ -95,8 +95,8 @@
             <h3>Description:</h3>
           </ons-col>
           <ons-col class="right">
-            <a ng-hide="isDescriptionEdit" ng-click="isDescriptionEdit = !isDescriptionEdit;$('#descriptionEditor').focus()">Edit <ons-icon icon="ion-edit"></ons-icon></a>
-            <a ng-hide="!isDescriptionEdit" ng-click="plan.saveDescription();isDescriptionEdit = !isDescriptionEdit;">Save <ons-icon icon="fa-floppy-o"></ons-icon></a>
+            <a ng-cloak ng-show="mySecurityLevel <= 1 && !isDescriptionEdit" ng-click="isDescriptionEdit = !isDescriptionEdit;$('#descriptionEditor').focus()">Edit <ons-icon icon="ion-edit"></ons-icon></a>
+            <a ng-cloak ng-show="mySecurityLevel <= 1 && isDescriptionEdit" ng-click="plan.saveDescription();isDescriptionEdit = !isDescriptionEdit;">Save <ons-icon icon="fa-floppy-o"></ons-icon></a>
           </ons-col>
         </ons-row>
         <div id="descriptionEditor" contenteditable="{{isDescriptionEdit}}" ng-class="{editable: isDescriptionEdit , expand: isDescriptionExpand} " ng-bind-html="plan.meta.description" placeholder="You haven't planned this event yet...&#10;What are you waiting for!"></div>
@@ -110,19 +110,38 @@
           <ons-col class="left">
             <h3>Location:</h3>
           </ons-col>
-          <ons-col class="right">
+          <ons-col ng-cloak class="right" ng-show="mySecurityLevel <= 1">
             <a ng-click="locationPicker.show({'animation':'none'});">Add <ons-icon icon="ion-ios-plus-outline"></ons-icon> </a>
           </ons-col>
         </ons-row>
         <ons-list>
-          <ons-list-item ng-repeat="loc in plan.meta.locations">
-            {{loc.address}}
+          <ons-list-item ng-repeat="(id,loc) in plan.meta.locations">
+            <ons-row>
+              <ons-col>
+                {{loc.address}}
+              </ons-col>
+              <ons-icon ng-cloak ng-show="mySecurityLevel <= 1" icon="ion-android-delete" ng-click="plan.deleteLocation(id);"></ons-icon>
+            </ons-row>
           </ons-list-item>
         </ons-list>
       </div>
       <div class="meta-section meta-time">
+        <ons-row>
+          <ons-col class="left">
+            <h3>Time & Date:</h3>
+          </ons-col>
+          <ons-col class="right">
+            <a ng-cloak ng-show="mySecurityLevel <= 1 && !isDatetimeEdit" ng-click="isDatetimeEdit = !isDatetimeEdit;">Edit <ons-icon icon="ion-edit"></ons-icon></a>
+            <a ng-cloak ng-show="mySecurityLevel <= 1 && isDatetimeEdit" ng-click="plan.saveDatetime();isDatetimeEdit = !isDatetimeEdit;">Save <ons-icon icon="fa-floppy-o"></ons-icon></a>
+          </ons-col>
+        </ons-row>
+        <ons-row>
+          <input ng-show="isDatetimeEdit" type="datetime-local" ng-model="plan.datetime">
+          <p ng-show="!isDatetimeEdit">{{plan.datetime}}</p>
+        </ons-row>
       </div>
-      <br><br> {{plan.meta}}
+      <br><br>
+      <hr><hr>Debugging data:<hr><hr> {{plan.meta}}
     </div>
     <ons-dialog ng-controller="locationPickerCtrl" var="locationPicker" id="location_picker" cancelable ons-postshow="loadMap()">
       <div id="here_map"></div>
